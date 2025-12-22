@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --color-primary: #135bec;
+    --color-background-light: #f6f6f8;
+    --color-background-dark: #101622;
+    --color-surface-dark: #192233;
+    --color-border-dark: #232f48;
+
+    --font-display: "Space Grotesk", sans-serif;
+    --font-body: "Noto Sans", sans-serif;
+}
+
+body {
+    @apply font-body bg-background-light text-slate-900 dark:bg-background-dark dark:text-white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+}

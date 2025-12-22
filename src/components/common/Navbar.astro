@@ -1,0 +1,91 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import ThemeToggle from "../ui/ThemeToggle.astro";
+import Logo from "./Logo.astro";
+
+interface Props {
+    lang: 'en' | 'it';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Qui puoi mettere logica JS se serve (es. per il menu mobile)
+const links = lang === 'it' ? [
+    { name: "Chi sono", href: "#about" },
+    { name: "Competenze", href: "#skills" },
+    { name: "Progetti", href: "#projects" },
+    { name: "Contatti", href: "#contact" },
+] : [
+    { name: "About", href: "#about" },
+    { name: "Skills", href: "#skills" },
+    { name: "Projects", href: "#projects" },
+    { name: "Contact", href: "#contact" },
+];
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-solid border-gray-200 dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+    <div class="flex h-16 items-center justify-between px-4 sm:px-10 max-w-[1200px] mx-auto w-full">
+        <div class="flex items-center gap-2 text-primary dark:text-white">
+            <div class="flex items-center justify-center size-8 rounded-lg bg-primary/10 dark:bg-white/10">
+                <Logo className="w-5 h-5 text-primary dark:text-white" />
+            </div>
+            <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                Federico Benini
+            </h2>
+        </div>
+        
+        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center"> <!-- Aggiunto items-center -->
+            <div class="flex items-center gap-9">
+                {links.map(link => (
+                    <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors"
+                        href={link.href}>
+                        {link.name}
+                    </a>
+                ))}
+            </div>
+
+            <!-- Separatore verticale -->
+            <div class="h-6 w-px bg-gray-300 dark:bg-border-dark mx-2"></div>
+
+            <!-- Toggle Tema -->
+            <ThemeToggle />
+
+            <!-- Language Switcher -->
+            <div class="flex items-center gap-2 ml-2 text-sm font-medium">
+                <a href="/" 
+                   class={lang === 'en' ? "text-primary dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}>
+                   EN
+                </a>
+                <span class="text-slate-300 dark:text-slate-600">|</span>
+                <a href="/it" 
+                   class={lang === 'it' ? "text-primary dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}>
+                   IT
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center gap-4 md:hidden">
+            <!-- Switch theme toggle -->
+            <ThemeToggle />
+
+            <!-- Language Switcher -->
+            <div class="flex items-center gap-2 ml-2 text-sm font-medium">
+                <a href="/" 
+                   class={lang === 'en' ? "text-primary dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}>
+                   EN
+                </a>
+                <span class="text-slate-300 dark:text-slate-600">|</span>
+                <a href="/it" 
+                   class={lang === 'it' ? "text-primary dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}>
+                   IT
+                </a>
+            </div>
+
+            <button class="p-2 text-slate-600 dark:text-slate-300 flex items-center justify-center">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
