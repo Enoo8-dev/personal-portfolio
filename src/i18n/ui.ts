@@ -15,7 +15,8 @@ export const ui = {
         "hero.subtitle": "Hi, I'm Federico. I'm full stack developer graduating in computer science. I love creating elegant web applications and putting user experience first.",
         "hero.primaryCTAText": "See My Works",
         "hero.secondaryCTAText": "Contact Me",
-        "hero.pill": "Available for work"
+        "hero.pill": "Available for work",
+        "footer.rights": "All rights reserved."
     },
     it: {
         "nav.about": "Chi sono",
@@ -26,6 +27,7 @@ export const ui = {
         "hero.subtitle": "Ciao, sono Federico. Un full stack developer laureando in informatica. Amo creare applicazioni web eleganti e mettere al primo posto l'esperienza utente.",
         "hero.primaryCTAText": "Vedi i miei lavori",
         "hero.secondaryCTAText": "Contattami",
-        "hero.pill": "Disponibile per lavori"
+        "hero.pill": "Disponibile per lavori",
+        "footer.rights": "Tutti i diritti riservati."
     }
 } as const;
