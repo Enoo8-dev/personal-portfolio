@@ -1,29 +1,30 @@
+<!-- TODO: per il tema chiaro all'hover deve essere blue e per il tema scuro bianco -->
 <button
-  id="theme-toggle"
-  class="inline-flex items-center justify-center rounded-lg p-2.5 text-sm text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 dark:focus:ring-slate-700 transition-colors cursor-pointer"
+  type="button"
+  class="theme-toggle-btn inline-flex items-center justify-center rounded-lg p-2.5 text-sm text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 dark:focus:ring-slate-700 transition-colors cursor-pointer"
   aria-label="Toggle Dark Mode"
 >
-  <!-- Icona Sole (visibile solo in dark mode) -->
   <span class="material-symbols-outlined !hidden dark:!block">light_mode</span>
-  
-  <!-- Icona Luna (visibile solo in light mode) -->
   <span class="material-symbols-outlined !block dark:!hidden">dark_mode</span>
 </button>
 
 <script>
-  const themeToggleBtn = document.getElementById('theme-toggle');
+  const handleToggleClick = () => {
+    const element = document.documentElement;
+    element.classList.toggle("dark");
 
-  // Funzione per gestire il click
-  themeToggleBtn?.addEventListener('click', () => {
-    const html = document.documentElement;
-    
-    // Se ha la classe dark, la togliamo, altrimenti la mettiamo
-    if (html.classList.contains('dark')) {
-      html.classList.remove('dark');
-      localStorage.setItem('theme-portfolio', 'light');
-    } else {
-      html.classList.add('dark');
-      localStorage.setItem('theme-portfolio', 'dark');
-    }
+    const isDark = element.classList.contains("dark");
+    localStorage.setItem("theme-portfolio", isDark ? "dark" : "light");
+  }
+
+  // Selezioniamo TUTTI i bottoni con la classe (sia quello desktop che mobile)
+  const themeButtons = document.querySelectorAll('.theme-toggle-btn');
+
+  themeButtons.forEach(btn => {
+    // Rimuoviamo eventuali listener vecchi 
+    btn.removeEventListener('click', handleToggleClick); 
+    // Aggiungiamo il listener a ogni bottone trovato
+    btn.addEventListener('click', handleToggleClick);
   });
+
 </script>
