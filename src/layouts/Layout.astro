@@ -19,6 +19,13 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const currentPath = Astro.url.pathname;
+const basePath = currentPath.startsWith('/it') ? currentPath.replace(/^\/it/, '') : currentPath;
+const normalizedPath = basePath === '' ? '/' : basePath;
+
+const enUrl = new URL(normalizedPath, Astro.site);
+const itUrl = new URL(`/it${normalizedPath === '/' ? '' : normalizedPath}`, Astro.site);
 ---
 
 <!doctype html>
@@ -33,6 +40,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalURL} />
+
+        <!-- Hreflang Tags -->
+        <link rel="alternate" hreflang="en" href={enUrl.href} />
+        <link rel="alternate" hreflang="it" href={itUrl.href} />
+        <link rel="alternate" hreflang="x-default" href={enUrl.href} />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
