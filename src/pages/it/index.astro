@@ -3,6 +3,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/utils';
 import Hero from '../../components/sections/Hero.astro';
+import Skills from '../../components/sections/Skills.astro';
 
 const lang = 'it'; // Lingua fissa per questa pagina
 const t = useTranslations(lang);
@@ -11,5 +12,6 @@ const t = useTranslations(lang);
 <Layout title="Federico Benini Portfolio" lang={lang}>
     <main class="flex flex-col items-center w-full">
         <Hero lang={lang} />
+        <Skills lang={lang} />
     </main>
 </Layout>

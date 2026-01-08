@@ -1,0 +1,200 @@
+---
+import { useTranslations } from "../../i18n/utils";
+import { skills } from "../../data/skills";
+
+interface Props {
+    lang: "en" | "it";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .skill-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 9999px;
+        background-color: #cbd5e1;
+        transition: all 300ms;
+    }
+
+    :global(.dark) .skill-dot {
+        background-color: var(--color-surface-dark);
+        border: 1px solid var(--color-border-dark);
+    }
+
+    .skill-dot.active {
+        background-color: var(--color-primary); 
+        width: 1.5rem;
+    }
+</style>
+
+<section class="w-full max-w-[1200px] px-4 py-16 sm:px-10 relative group/section" id="skills">
+    <div class="flex flex-col gap-2 mb-2 md:mb-8">
+        <h2 class="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-[-0.015em] font-display">
+            {t("skills.title")}
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl">
+            {t("skills.subtitle")}
+        </p>
+    </div>
+
+    <div class="relative">
+        <button 
+    id="prev-btn"
+    class="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
+    aria-label="Previous slide"
+>
+    <span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+
+<button 
+    id="next-btn"
+    class="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
+    aria-label="Next slide"
+>
+    <span class="material-symbols-outlined text-xl">chevron_right</span>
+</button>
+
+        <div 
+            id="skills-carousel"
+            class="flex overflow-x-auto snap-x snap-mandatory py-6 -mx-4 px-4 gap-4 no-scrollbar scroll-smooth md:grid md:grid-cols-3 lg:grid-cols-4 md:overflow-visible md:mx-0 md:px-0 md:pb-0"
+        >
+            {
+                skills.map((skill, index) => {
+                    const randomRotate = Math.random() * 8 - 4;
+                    return (
+                        <div
+                            data-index={index}
+                            class="skill-card group relative shrink-0 w-[85vw] xxs:w-[300px] sm:w-[350px] md:w-full snap-center"
+                            style={`--hover-rotate: ${randomRotate}deg`}
+                        >
+                            <div class={`absolute -inset-0.5 bg-gradient-to-r from-[var(--color-primary)] ${skill.neon} rounded-xl blur opacity-0 group-hover:opacity-75 transition duration-500 group-hover:duration-200`} />
+                            <div class="relative flex flex-row md:flex-col gap-4 rounded-xl border border-gray-200 dark:border-border-dark bg-white dark:bg-surface-dark p-4 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:rotate-[var(--hover-rotate)] cursor-default h-full items-start md:justify-between">
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-auto md:w-full shrink-0">
+                                    <div class={`shrink-0 size-12 md:size-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${skill.iconBg} ${skill.iconColor}`}>
+                                        {skill.imageSrc ? (
+                                            <img src={skill.imageSrc} alt={skill.name} class="w-7 h-7 md:w-6 md:h-6 object-contain" />
+                                        ) : (
+                                            <span class="material-symbols-outlined text-[28px] md:text-[24px]">
+                                                {skill.icon}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <span class="hidden md:inline-flex text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
+                                        {skill.type}
+                                    </span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0 w-full mt-1 md:mt-4">
+                                    <div class="flex items-center justify-between gap-2 mb-2 md:mb-1 w-full">
+                                        <h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight truncate flex-1">
+                                            {skill.name}
+                                        </h3>
+                                        <span class="md:hidden shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
+                                            {skill.type}
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 md:line-clamp-2 leading-relaxed">
+                                        {skill.description[lang]}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })
+            }
+        </div>
+    </div>
+
+    <div class="flex md:hidden flex-wrap justify-center gap-2 mt-4 px-4">
+        {skills.map((_, index) => (
+            <button
+                aria-label={`Go to slide ${index + 1}`}
+                data-index={index}
+                class="skill-dot"
+            ></button>
+        ))}
+    </div>
+</section>
+
+<script>
+    const carousel = document.getElementById('skills-carousel');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const dots = document.querySelectorAll('.skill-dot');
+    const cards = document.querySelectorAll('.skill-card');
+
+    if (carousel && prevBtn && nextBtn) {
+        // Calcola quanto scrollare (larghezza card + gap)
+        const getScrollAmount = () => {
+            const card = cards[0] as HTMLElement;
+            return card ? card.offsetWidth + 16 : 300;
+        };
+
+        // PREV BUTTON: Logica Infinite Scroll
+        prevBtn.addEventListener('click', () => {
+            // Tolleranza di 10px perché lo scroll non è sempre preciso al pixel
+            if (carousel.scrollLeft <= 10) {
+                // Se siamo all'inizio, vai alla fine
+                carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+            } else {
+                // Altrimenti torna indietro normalmente
+                carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+            }
+        });
+
+        // NEXT BUTTON: Logica Infinite Scroll
+        nextBtn.addEventListener('click', () => {
+            const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+            
+            // Se siamo alla fine (con tolleranza di 10px), torna all'inizio
+            if (carousel.scrollLeft >= maxScrollLeft - 10) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                // Altrimenti vai avanti normalmente
+                carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+            }
+        });
+
+        // Click sui Dots (Resta invariato)
+        dots.forEach((dot) => {
+            dot.addEventListener('click', (e) => {
+                const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+                const targetCard = cards[index] as HTMLElement;
+                const cardLeft = targetCard.offsetLeft;
+                const scrollPos = cardLeft - (carousel.clientWidth / 2) + (targetCard.clientWidth / 2);
+                carousel.scrollTo({ left: scrollPos, behavior: 'smooth' });
+            });
+        });
+
+        // Intersection Observer (Resta invariato)
+        const observerOptions = {
+            root: carousel,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = entry.target.getAttribute('data-index');
+                    dots.forEach(d => d.classList.remove('active'));
+                    if (index) {
+                        const activeDot = dots[parseInt(index)];
+                        if (activeDot) activeDot.classList.add('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => observer.observe(card));
+    }
+</script>

@@ -16,6 +16,8 @@ export const ui = {
         "hero.primaryCTAText": "See My Works",
         "hero.secondaryCTAText": "Contact Me",
         "hero.pill": "Available for work",
+        "skills.title": "My Tech Stack",
+        "skills.subtitle": "Tools and Technologies I use to bring ideas to life.",
         "footer.rights": "All rights reserved."
     },
     it: {
@@ -28,6 +30,8 @@ export const ui = {
         "hero.primaryCTAText": "Vedi i miei lavori",
         "hero.secondaryCTAText": "Contattami",
         "hero.pill": "Disponibile per lavori",
+        "skills.title": "Il mio Tech Stack",
+        "skills.subtitle": "Strumenti e tecnologie che utilizzo per dare vita alle idee.",
         "footer.rights": "Tutti i diritti riservati."
     }
 } as const;
