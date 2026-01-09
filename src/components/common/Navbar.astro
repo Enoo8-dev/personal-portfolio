@@ -20,14 +20,14 @@ const links = [
 
 <header class="sticky top-0 z-50 w-full border-b border-solid border-gray-200 dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
     <div class="relative z-50 flex h-16 items-center justify-between px-4 sm:px-10 max-w-[1200px] mx-auto w-full bg-inherit">
-        <div class="flex items-center gap-2 text-primary dark:text-white">
+        <a href="#about" class="flex items-center gap-2 text-primary dark:text-white">
             <div class="flex items-center justify-center size-8 rounded-lg bg-primary/10 dark:bg-white/10">
                 <Logo className="w-5 h-5 text-primary dark:text-white" />
             </div>
             <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] font-display">
                 Federico Benini
             </h2>
-        </div>
+        </a>
         
         <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
             <div class="flex items-center gap-9">
@@ -148,5 +148,30 @@ const links = [
 
     links.forEach(link => {
         link.addEventListener('click', () => toggleMenu(false));
+    });
+
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+
+        const target = document.querySelector(href);
+        
+        if (target) {
+            const headerOffset = 60; 
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            // 3. Esegui lo scroll manuale
+            window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+            });
+        }
+        });
     });
 </script>

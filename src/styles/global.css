@@ -13,6 +13,10 @@
     --font-body: "Noto Sans", sans-serif;
 }
 
+html {
+    @apply scroll-smooth scroll-pt-6;
+}
+
 body {
     @apply font-body bg-background-light text-slate-900 dark:bg-background-dark dark:text-white;
 }

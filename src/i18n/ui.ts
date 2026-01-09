@@ -18,7 +18,19 @@ export const ui = {
         "hero.pill": "Available for work",
         "skills.title": "My Tech Stack",
         "skills.subtitle": "Tools and Technologies I use to bring ideas to life.",
-        "footer.rights": "All rights reserved."
+        "footer.rights": "All rights reserved.",
+        "contact.title": "Let's work together",
+        "contact.subtitle": "Have a project in mind or want to discuss modern web technologies? I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.",
+        "contact.email": "Email",
+        "contact.location": "Location",
+        "contact.location.value": "Italy",
+        "contact.form.name": "Name",
+        "contact.form.email": "Email",
+        "contact.form.message": "Message",
+        "contact.form.placeholder.name": "Your name",
+        "contact.form.placeholder.email": "Your email",
+        "contact.form.placeholder.message": "How can I help you?",
+        "contact.form.send": "Send Message"
     },
     it: {
         "nav.about": "Chi sono",
@@ -32,6 +44,18 @@ export const ui = {
         "hero.pill": "Disponibile per lavori",
         "skills.title": "Il mio Tech Stack",
         "skills.subtitle": "Strumenti e tecnologie che utilizzo per dare vita alle idee.",
-        "footer.rights": "Tutti i diritti riservati."
+        "footer.rights": "Tutti i diritti riservati.",
+        "contact.title": "Lavoriamo insieme",
+        "contact.subtitle": "Hai un progetto in mente o vuoi discutere di tecnologie web moderne? Sono sempre disponibile a valutare nuovi progetti, idee creative o opportunità di collaborazione.",
+        "contact.email": "Email",
+        "contact.location": "Posizione",
+        "contact.location.value": "Italia",
+        "contact.form.name": "Nome",
+        "contact.form.email": "Email",
+        "contact.form.message": "Messaggio",
+        "contact.form.placeholder.name": "Il tuo nome",
+        "contact.form.placeholder.email": "La tua email",
+        "contact.form.placeholder.message": "Come posso aiutarti?",
+        "contact.form.send": "Invia Messaggio"
     }
 } as const;
