@@ -1,0 +1,11 @@
+---
+title: "Personal Portfolio 2028-01-10"
+description: "Il mio sito personale costruito con Astro e TailwindCSS. Veloce, accessibile e SEO friendly."
+lang: "it"
+tags: ["Astro", "TypeScript", "PHP"]
+github: "https://github.com/Enoo8-dev/personal-portfolio"
+featured: false
+pubDate: 2028-01-10
+---
+
+Qui puoi scrivere il contenuto lungo del progetto che apparirà nella pagina di dettaglio (se deciderai di farla). Per ora usiamo i metadati sopra.

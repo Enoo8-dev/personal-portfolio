@@ -1,0 +1,202 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from "astro:content";
+import ProjectCard from '../../components/ui/ProjectCard.astro';
+import ScrollToTop from '../../components/ui/ScrollToTop.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'it';
+const t = useTranslations(lang);
+
+const allProjects = await getCollection(
+    "projects",
+    ({ data }: { data: CollectionEntry<"projects">["data"] }) => {
+        return data.lang === lang;
+    },
+);
+
+const sortedProjects = allProjects.sort(
+    (a, b) => {
+        // Featured first
+        if (a.data.featured && !b.data.featured) return -1;
+        if (!a.data.featured && b.data.featured) return 1;
+        // Date descending
+        return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+    }
+);
+
+// --- LOGICA ESTRAZIONE TAG ---
+// Metto tutti i tag in un unico array
+const allTags = allProjects.flatMap(project => project.data.tags);
+
+// Conto quante volte appare ogni tag
+const tagCounts = allTags.reduce((acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+}, {} as Record<string, number>);
+
+// Creo array di tag unici e li ordino (per numero progetti DESC, poi alfabetico)
+const uniqueTags = Object.keys(tagCounts).sort((a, b) => {
+    const countDiff = tagCounts[b] - tagCounts[a];
+    if (countDiff !== 0) return countDiff;
+    return a.localeCompare(b);
+});
+---
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+</style>
+
+<Layout title="Tutti i Progetti | Federico Benini" lang={lang}>
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-10 py-24">
+        <div class="mb-12">
+            <a 
+                href="/it" 
+                class="group relative inline-flex items-center gap-1 text-sm font-bold mb-4 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors w-fit"
+            >
+                <span class="material-symbols-outlined !text-lg transition-transform duration-300 group-hover:-translate-x-1">
+                    arrow_back
+                </span>
+                
+                <span>{t("projects.page.backhome")}</span>
+
+                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
+            </a>
+            
+            <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white font-display mb-8">
+                {t("projects.title")}
+            </h1>
+
+            <!-- --- FILTRI TAG --- -->
+            <div class="flex flex-wrap gap-3 mb-8">
+                <!-- Bottone "Tutti" -->
+                <button 
+                    id="reset-filters"
+                    class="filter-btn uppercase px-4 py-2 rounded-full border border-slate-200 dark:border-white/10 text-sm font-bold transition-all duration-300 hover:border-primary hover:text-primary hidden active-filter cursor-pointer"
+                >
+                    {t("projects.page.all")}
+                </button>
+                <!-- bottoni tag -->
+                {uniqueTags.map(tag => (
+                    <button 
+                        class="filter-tag px-4 py-2 rounded-full border text-sm font-medium transition-all duration-300 cursor-pointer
+                        
+                        border-slate-200 dark:border-white/10 
+                        bg-white/50 dark:bg-slate-900/50 
+                        text-slate-600 dark:text-slate-300
+                        hover:border-primary hover:text-primary hover:bg-primary/5
+                        dark:hover:border-primary dark:hover:text-primary
+                        
+                        data-[active]:bg-primary 
+                        data-[active]:text-white 
+                        data-[active]:border-primary
+                        data-[active]:hover:text-white
+                        data-[active]:hover:bg-primary dark:data-[active]:bg-primary 
+                        dark:data-[active]:hover:bg-primary/50 data-[active]:hover:ring-primary data-[active]:hover:ring-1 data-[active]:hover:ring-offset-2
+                        data-[active]:hover:text-white dark:data-[active]:hover:text-white"
+                        
+                        data-tag={tag}
+                    >
+                        {tag} 
+                        <span class="ml-1 text-xs opacity-60">({tagCounts[tag]})</span>
+                    </button>
+                ))}
+            </div>
+            
+            <!-- Messaggio nessun risultato -->
+            <div id="no-results" class="hidden py-20 text-center">
+                <p class="text-xl text-slate-500">{t('projects.page.noresults')}</p>
+                <button id="clear-filters-msg" class="mt-4 text-primary font-bold underline">{t('projects.page.resetfilters')}</button>
+            </div>
+
+        </div>
+
+        <!-- Griglia Progetti -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[50vh]">
+            {sortedProjects.map((project) => (
+                <ProjectCard project={project} />
+            ))}
+        </div>
+    </main>
+    <ScrollToTop />
+</Layout>
+
+<script>
+    const filterBtns = document.querySelectorAll('.filter-tag');
+    const resetBtn = document.getElementById('reset-filters');
+    const clearMsgBtn = document.getElementById('clear-filters-msg');
+    const projectCards = document.querySelectorAll('.project-card');
+    const noResultsMsg = document.getElementById('no-results');
+    
+    let activeTags = new Set<string>();
+
+    const updateVisibility = () => {
+        let visibleCount = 0;
+
+        projectCards.forEach(card => {
+            const el = card as HTMLElement;
+            // leggo tag dalla card
+            const cardTags = JSON.parse(el.dataset.tags || '[]');
+            
+            const isVisible = [...activeTags].every(tag => cardTags.includes(tag));
+
+            if (isVisible) {
+                el.classList.remove('hidden');
+                el.classList.add('animate-fade-in'); 
+                visibleCount++;
+            } else {
+                el.classList.add('hidden');
+                el.classList.remove('animate-fade-in');
+            }
+        });
+
+        // messaggio errore
+        if (visibleCount === 0) {
+            noResultsMsg?.classList.remove('hidden');
+        } else {
+            noResultsMsg?.classList.add('hidden');
+        }
+
+        // bottone reset filters
+        if (activeTags.size > 0) {
+            resetBtn?.classList.remove('hidden');
+        } else {
+            resetBtn?.classList.add('hidden');
+        }
+    };
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tag = btn.getAttribute('data-tag');
+            if (!tag) return;
+
+            if (activeTags.has(tag)) {
+                activeTags.delete(tag);
+                btn.removeAttribute('data-active');
+            } else {
+                activeTags.add(tag);
+                btn.setAttribute('data-active', 'true');
+            }
+
+            updateVisibility();
+        });
+    });
+
+    const clearAll = () => {
+        activeTags.clear();
+        filterBtns.forEach(btn => {
+            btn.removeAttribute('data-active');
+        });
+        updateVisibility();
+    };
+
+    resetBtn?.addEventListener('click', clearAll);
+    clearMsgBtn?.addEventListener('click', clearAll);
+
+</script>
