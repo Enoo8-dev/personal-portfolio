@@ -28,13 +28,14 @@ const { project, className = "" } = Astro.props;
     {/* imagine di sfondo */}
     <div
       class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
-      style={`background-image: url('${project.data.image || "/images/placeholder-card-projects.jpg"}');`}
+      style={`background-image: url('${project.data.image || "/images/placeholder-card-projects.jpg"}'); transform: translateZ(0);`}
     >
     </div>
 
     {/* overlay scuro */}
     <div
       class="absolute inset-0 z-10 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent"
+      style="transform: translateZ(0);"
     >
     </div>
 
