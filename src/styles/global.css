@@ -11,6 +11,7 @@
 
     --font-display: "Space Grotesk", sans-serif;
     --font-body: "Noto Sans", sans-serif;
+    --font-terminal: "VT323", monospace;
 }
 
 html {
@@ -23,4 +24,20 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+}
+
+@keyframes glitch {
+    2%, 64% {
+        transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+        transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+        transform: translate(0,0) skew(5deg);
+    }
+}
+
+.animate-glitch {
+    animation: glitch 1s linear infinite;
 }

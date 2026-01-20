@@ -38,7 +38,15 @@ export const ui = {
         "contact.form.placeholder.name": "Your name",
         "contact.form.placeholder.email": "Your email",
         "contact.form.placeholder.message": "How can I help you?",
-        "contact.form.send": "Send Message"
+        "contact.form.send": "Send Message",
+        "404.title": "404 - Page Not Found",
+        "404.console.connecting": "Connecting to beninifederico.it...",
+        "404.console.error": "Error 404: Page not found in the stack.",
+        "404.console.comment": "// The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+        "404.heading": "Oops! This page has been deprecated.",
+        "404.description": "It looks like you've encountered a bug in the matrix. Don't worry, you can easily navigate back to safety.",
+        "404.back": "Go Back Home",
+        "404.contact": "Contact Me"
     },
     it: {
         "nav.about": "Chi sono",
@@ -72,6 +80,14 @@ export const ui = {
         "contact.form.placeholder.name": "Il tuo nome",
         "contact.form.placeholder.email": "La tua email",
         "contact.form.placeholder.message": "Come posso aiutarti?",
-        "contact.form.send": "Invia Messaggio"
+        "contact.form.send": "Invia Messaggio",
+        "404.title": "404 - Pagina non trovata",
+        "404.console.connecting": "Connessione a beninifederico.it...",
+        "404.console.error": "Errore 404: Pagina non trovata nello stack.",
+        "404.console.comment": "// La risorsa che stai cercando potrebbe essere stata rimossa, rinominata o momentaneamente non disponibile.",
+        "404.heading": "Ops! Questa pagina è stata deprecata.",
+        "404.description": "Sembra che tu abbia incontrato un bug nella matrice. Non preoccuparti, puoi facilmente tornare al sicuro.",
+        "404.back": "Torna alla Home",
+        "404.contact": "Contattami"
     }
 } as const;
