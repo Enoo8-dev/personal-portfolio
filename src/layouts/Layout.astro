@@ -26,6 +26,11 @@ const normalizedPath = basePath === '' ? '/' : basePath;
 
 const enUrl = new URL(normalizedPath, Astro.site);
 const itUrl = new URL(`/it${normalizedPath === '/' ? '' : normalizedPath}`, Astro.site);
+
+const locales = {
+    en: 'en_US',
+    it: 'it_IT'
+};
 ---
 
 <!doctype html>
@@ -39,6 +44,7 @@ const itUrl = new URL(`/it${normalizedPath === '/' ? '' : normalizedPath}`, Astr
         <!-- SEO Principale -->
         <title>{title}</title>
         <meta name="description" content={description} />
+        <meta name="author" content="Federico Benini" />
         <link rel="canonical" href={canonicalURL} />
 
         <!-- Hreflang Tags -->
@@ -52,6 +58,9 @@ const itUrl = new URL(`/it${normalizedPath === '/' ? '' : normalizedPath}`, Astr
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={new URL(image, Astro.url)} />
+        <meta property="og:site_name" content="Federico Benini Portfolio" />
+        <meta property="og:locale" content={locales[lang]} />
+        <meta property="og:locale:alternate" content={lang === 'en' ? locales.it : locales.en} />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
