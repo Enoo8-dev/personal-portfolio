@@ -6,6 +6,8 @@ import sitemap from '@astrojs/sitemap';
 
 import node from '@astrojs/node';
 
+import mdx from '@astrojs/mdx';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://beninifederico.it',
@@ -14,7 +16,7 @@ export default defineConfig({
       plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap()],
+  integrations: [sitemap(), mdx()],
 
   i18n: {
     defaultLocale: 'en',
