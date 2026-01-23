@@ -1,5 +1,8 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+// src/components/sections/Projects.astro
+
+// 1. Rimuovi getCollection e importa la funzione WP
+import { getWPProjects } from "../../lib/wp";
 import { useTranslations } from "../../i18n/utils";
 import ProjectCard from "../ui/ProjectCard.astro";
 
@@ -10,26 +13,23 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-// Recupera tutti i progetti filtrati per lingua
-const allProjects = await getCollection(
-    "projects",
-    ({ data }: { data: CollectionEntry<"projects">["data"] }) => {
-        return data.lang === lang;
-    },
-);
+// 2. Recupera TUTTI i progetti da WordPress
+const allWPProjects = await getWPProjects();
 
-const sortedProjects = allProjects.sort(
-    (a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) => {
-        // Priorità ai progetti in evidenza
-        if (a.data.featured && !b.data.featured) return -1;
-        if (!a.data.featured && b.data.featured) return 1;
+// 3. Filtra per lingua corrente
+const filteredProjects = allWPProjects.filter(p => p.data.lang === lang);
 
-        // Se entrambi hanno la stessa priorità, ordina per data (più recente prima)
-        return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-    }
-);
+// 4. Applica l'ordinamento: Prima i Featured, poi per Data
+const sortedProjects = filteredProjects.sort((a, b) => {
+    // Priorità ai progetti in evidenza
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
 
-// Prendi solo i primi 6 progetti
+    // Se entrambi hanno la stessa priorità (entrambi featured o entrambi no), ordina per data
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+// 5. Prendi solo i primi 6 progetti
 const displayedProjects = sortedProjects.slice(0, 6);
 
 const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
@@ -39,7 +39,6 @@ const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
     id="projects"
     class="w-full py-20 px-4 sm:px-10 max-w-[1200px] mx-auto scroll-mt-20"
 >
-    <!-- Intestazione -->
     <div class="flex flex-col gap-4 mb-12">
         <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-display">
             {t("projects.title")}
@@ -49,7 +48,6 @@ const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
         </p>
     </div>
 
-    <!-- Griglia Progetti -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
             displayedProjects.map((project, index) => (
@@ -61,7 +59,6 @@ const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
         }
     </div>
 
-    <!-- Bottone Vedi Tutti -->
     <div class="flex justify-center mt-12">
         <a 
             href={viewAllLink}

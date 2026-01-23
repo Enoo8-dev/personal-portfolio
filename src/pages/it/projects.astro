@@ -1,46 +1,36 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, type CollectionEntry } from "astro:content";
 import ProjectCard from '../../components/ui/ProjectCard.astro';
 import ScrollToTop from '../../components/ui/ScrollToTop.astro';
-import { useTranslations } from '../../i18n/utils';
 
-const lang = 'it';
+// 1. Importiamo la funzione per WordPress
+import { getWPProjects } from '../../lib/wp';
+
+// 2. Importiamo le utility per le lingue
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+// 3. Setup Lingua (Forziamo 'it' per questa pagina)
+const lang = 'it'; 
 const t = useTranslations(lang);
 
-const allProjects = await getCollection(
-    "projects",
-    ({ data }: { data: CollectionEntry<"projects">["data"] }) => {
-        return data.lang === lang;
-    },
-);
+// 4. Recupero Dati da WP
+// Nota: Per ora recuperiamo TUTTI i progetti. 
+// In futuro potrai installare Polylang su WP per filtrare per lingua.
+const allProjects = await getWPProjects();
 
-const sortedProjects = allProjects.sort(
-    (a, b) => {
-        // Featured first
-        if (a.data.featured && !b.data.featured) return -1;
-        if (!a.data.featured && b.data.featured) return 1;
-        // Date descending
-        return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-    }
-);
+// FILTRIAMO solo quelli italiani
+const projects = allProjects.filter(project => project.data.lang === 'it');
 
-// --- LOGICA ESTRAZIONE TAG ---
-// Metto tutti i tag in un unico array
-const allTags = allProjects.flatMap(project => project.data.tags);
+// Ordiniamo
+const sortedProjects = projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// 6. Logica dei Tag
+const allTags = sortedProjects.flatMap((project) => project.data.tags);
+const uniqueTags = [...new Set(allTags)].sort();
 
-// Conto quante volte appare ogni tag
 const tagCounts = allTags.reduce((acc, tag) => {
     acc[tag] = (acc[tag] || 0) + 1;
     return acc;
 }, {} as Record<string, number>);
-
-// Creo array di tag unici e li ordino (per numero progetti DESC, poi alfabetico)
-const uniqueTags = Object.keys(tagCounts).sort((a, b) => {
-    const countDiff = tagCounts[b] - tagCounts[a];
-    if (countDiff !== 0) return countDiff;
-    return a.localeCompare(b);
-});
 ---
 
 <style>

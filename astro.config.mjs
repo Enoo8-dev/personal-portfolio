@@ -20,6 +20,11 @@ export default defineConfig({
       }
   },
 
+  image: {
+    domains: ['localhost'],
+    remotePatterns: [{ protocol: "http" }],
+  },
+
   integrations: [sitemap(), mdx()],
 
   i18n: {
