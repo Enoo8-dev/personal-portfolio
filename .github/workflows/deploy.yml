@@ -1,0 +1,46 @@
+name: Deploy Self-Hosted
+
+on:
+  push:
+    branches:
+      - main  # Esegue il deploy quando fai push su main
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # <--- Questo dice a GitHub di usare il TUO server
+
+    steps:
+    - name: 🚚 Scarica il codice
+      uses: actions/checkout@v4
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: 📦 Installa dipendenze
+      run: npm ci
+
+    - name: 🛠️ Build del progetto
+      run: npm run build
+      env:
+        # Prende le chiavi dai Secrets di GitHub che abbiamo impostato prima
+        PUBLIC_WP_API_URL: ${{ secrets.PUBLIC_WP_API_URL }}
+        PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.CAPTCHA_SITE_KEY }}
+
+    - name: 🚀 Pubblica sul Server
+      run: |
+        # IMPOSTA QUI IL PERCORSO REALE DEL TUO SITO SUL SERVER
+        TARGET_DIR="/var/www/beninifederico"
+
+        echo "Sto copiando i file in $TARGET_DIR..."
+        
+        # Crea la cartella se non esiste
+        mkdir -p $TARGET_DIR
+        
+        # Copia i file generati (dist) nella cartella del server
+        # -r = ricorsivo (tutte le cartelle)
+        # -v = verbose (ti mostra cosa copia)
+        cp -r dist/* $TARGET_DIR/
+        
+        echo "✅ Deploy completato!"
