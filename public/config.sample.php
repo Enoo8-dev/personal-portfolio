@@ -6,5 +6,6 @@ return [
     'smtp_port' => 465,
     'smtp_user' => 'no-reply@tuodominio.it',
     'smtp_pass' => 'INSERISCI_QUI_LA_TUA_PASSWORD',
-    'to_email'  => 'tua@email.it'
+    'to_email'  => 'tua@email.it',
+    'captcha_site' => '*****************'
 ];

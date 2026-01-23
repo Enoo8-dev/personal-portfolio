@@ -19,6 +19,7 @@ $smtp_port = $config['smtp_port'];
 $smtp_user = $config['smtp_user'];
 $smtp_pass = $config['smtp_pass'];
 $to_email  = $config['to_email'];
+$captcha_site = $config['captcha_site'];
 // ---------------------------------
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

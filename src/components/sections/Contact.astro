@@ -29,6 +29,8 @@ const socialLinks = [
     }
 </style>
 
+<script is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.CAPTCHA_SITE_KEY}`}></script>
+
 <section class="w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-border-dark mt-8 transition-colors" id="contact">
     <div class="w-full max-w-[1200px] px-4 py-20 sm:px-10 mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
@@ -154,6 +156,7 @@ const socialLinks = [
 </section>
 
 <script>
+    const siteKey = import.meta.env.CAPTCHA_SITE_KEY;
     // Logica Client-Side per inviare i dati all'API
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
@@ -162,63 +165,78 @@ const socialLinks = [
     let msgTimer: ReturnType<typeof setTimeout>;
 
     if (form && submitBtn && statusMsg) {
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', (e) => {
             e.preventDefault(); 
 
-            if (msgTimer) {
-                clearTimeout(msgTimer);
-            }
-
+            // Blocchiamo subito il bottone per evitare doppi click
             submitBtn.disabled = true;
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> Invio...';
-            
-            statusMsg.classList.add('hidden');
-            statusMsg.className = "hidden"; 
 
-            const formData = new FormData(form);
+            // Chiamiamo Google reCAPTCHA
+            // @ts-ignore (Ignoriamo TypeScript perché grecaptcha è caricato esternamente)
+            grecaptcha.ready(function() {
+                // @ts-ignore
+                grecaptcha.execute(siteKey, {action: 'submit'}).then(async function(token) {                    
+                    if (msgTimer) {
+                        clearTimeout(msgTimer);
+                    }
 
-            try {
-                const response = await fetch('/send-email.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                statusMsg.classList.remove('hidden');
-
-                if (response.ok) {
-                    // SUCCESSO
-                    statusMsg.className = "mt-4 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 text-sm font-medium flex items-center justify-center gap-2 animate-pulse";
-                    statusMsg.innerHTML = `
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
-                        <span>Messaggio inviato con successo!</span>
-                    `;
-                    form.reset();
-                } else {
-                    // ERRORE
-                    statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
-                    statusMsg.innerHTML = `
-                        <span class="material-symbols-outlined text-lg">error</span>
-                        <span>${data.message || "Errore nell'invio."}</span>
-                    `;
-                }
-
-                msgTimer = setTimeout(() => {
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> Invio...';
+                    
                     statusMsg.classList.add('hidden');
-                }, 30000);
-            } catch (error) {
-                statusMsg.classList.remove('hidden');
-                statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
-                statusMsg.innerHTML = `
-                    <span class="material-symbols-outlined text-lg">wifi_off</span>
-                    <span>Errore di connessione. Riprova più tardi.</span>
-                `;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-            }
+                    statusMsg.className = "hidden"; 
+
+                    const formData = new FormData(form);
+
+                    // Aggiungiamo il token al formData prima di inviare
+                    formData.append('recaptcha_token', token); 
+
+                    try {
+                        const response = await fetch('/send-email.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const data = await response.json();
+
+                        statusMsg.classList.remove('hidden');
+
+                        if (response.ok) {
+                            // SUCCESSO
+                            statusMsg.className = "mt-4 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 text-sm font-medium flex items-center justify-center gap-2 animate-pulse";
+                            statusMsg.innerHTML = `
+                                <span class="material-symbols-outlined text-lg">check_circle</span>
+                                <span>Messaggio inviato con successo!</span>
+                            `;
+                            form.reset();
+                        } else {
+                            // ERRORE (Backend o Spam rilevato)
+                            statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
+                            statusMsg.innerHTML = `
+                                <span class="material-symbols-outlined text-lg">error</span>
+                                <span>${data.message || "Errore nell'invio."}</span>
+                            `;
+                        }
+
+                        msgTimer = setTimeout(() => {
+                            statusMsg.classList.add('hidden');
+                        }, 30000);
+
+                    } catch (error) {
+                        statusMsg.classList.remove('hidden');
+                        statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
+                        statusMsg.innerHTML = `
+                            <span class="material-symbols-outlined text-lg">wifi_off</span>
+                            <span>Errore di connessione. Riprova più tardi.</span>
+                        `;
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                    // --- FINE LOGICA ORIGINALE ---
+
+                }); // Chiusura .then()
+            }); // Chiusura .ready()
         });
     }
 
