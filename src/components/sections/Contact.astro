@@ -179,7 +179,7 @@ const socialLinks = [
             const formData = new FormData(form);
 
             try {
-                const response = await fetch('/api/send-email', {
+                const response = await fetch('/send-email.php', {
                     method: 'POST',
                     body: formData
                 });

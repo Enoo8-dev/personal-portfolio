@@ -4,8 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
 
-import node from '@astrojs/node';
-
 import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
@@ -14,6 +12,12 @@ export default defineConfig({
 
   vite: {
       plugins: [tailwindcss()],
+      server: {
+        proxy: {
+          // Invia le richieste dirette al file PHP verso il server PHP locale
+          '/send-email.php': 'http://localhost:8000'
+        }
+      }
   },
 
   integrations: [sitemap(), mdx()],
@@ -26,7 +30,5 @@ export default defineConfig({
     }
   },
 
-  adapter: node({
-    mode: 'standalone'
-  })
+  output: 'static',
 });

@@ -10,14 +10,9 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/node": "^9.5.2",
     "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
-    "nodemailer": "^7.0.12",
     "tailwindcss": "^4.1.18"
-  },
-  "devDependencies": {
-    "@types/nodemailer": "^7.0.4"
   }
 }
