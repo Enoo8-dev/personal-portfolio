@@ -31,7 +31,7 @@ jobs:
     - name: 🚀 Pubblica sul Server
       run: |
         # IMPOSTA QUI IL PERCORSO REALE DEL TUO SITO SUL SERVER
-        TARGET_DIR="/var/www/beninifederico"
+        TARGET_DIR="/var/www/beninifederico.it"
 
         echo "Sto copiando i file in $TARGET_DIR..."
         
