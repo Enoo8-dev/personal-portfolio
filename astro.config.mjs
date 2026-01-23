@@ -21,7 +21,7 @@ export default defineConfig({
   },
 
   image: {
-    domains: ['localhost'],
+    domains: ['localhost', 'www.beninifederico.it', 'beninifederico.it'],
     remotePatterns: [{ protocol: "http" }],
   },
 

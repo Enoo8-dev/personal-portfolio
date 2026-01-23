@@ -1,4 +1,4 @@
-const WP_API_URL = 'http://localhost:10004/wp-json/wp/v2';
+const WP_API_URL = import.meta.env.PUBLIC_WP_API_URL;
 
 export interface Project {
   slug: string;
