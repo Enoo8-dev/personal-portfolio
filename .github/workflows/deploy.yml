@@ -7,6 +7,10 @@ on:
   repository_dispatch:  
       types: [cms_update]
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: self-hosted  # <--- Questo dice a GitHub di usare il TUO server
