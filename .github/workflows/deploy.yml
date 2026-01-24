@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Esegue il deploy quando fai push su main
+  repository_dispatch:  
+      types: [cms_update]
 
 jobs:
   deploy:
