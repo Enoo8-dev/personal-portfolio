@@ -2,6 +2,7 @@
 // 1. Rimuovi l'import di astro:content e usa il tuo tipo personalizzato
 // import type { CollectionEntry } from "astro:content"; <--- CANCELLA QUESTO
 import type { Project } from "../../lib/wp"; // <--- AGGIUNGI QUESTO
+import { Image } from "astro:assets";
 
 interface Props {
   // 2. Aggiorna il tipo atteso
@@ -29,11 +30,20 @@ const { project, className = "" } = Astro.props;
     style="transform: translateZ(0);" 
   >
     {/* imagine di sfondo */}
-    <div
+    <!-- <div
       class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
       style={`background-image: url('${project.data.image}'); transform: translateZ(0);`}
     >
-    </div>
+    </div> -->
+    <Image
+      src={project.data.image}
+      alt={project.data.title}
+      width={800}    
+      inferSize={true} 
+      format="webp"  
+      class="absolute inset-0 z-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
+      style="transform: translateZ(0);"
+    />
 
     {/* overlay scuro */}
     <div
