@@ -50,20 +50,20 @@ const t = useTranslations(lang);
 
     <div class="relative">
         <button 
-    id="prev-btn"
-    class="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
-    aria-label="Previous slide"
->
-    <span class="material-symbols-outlined text-xl">chevron_left</span>
-</button>
+            id="prev-btn"
+            class="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
+            aria-label="Previous slide"
+        >
+            <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
 
-<button 
-    id="next-btn"
-    class="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
-    aria-label="Next slide"
->
-    <span class="material-symbols-outlined text-xl">chevron_right</span>
-</button>
+        <button 
+            id="next-btn"
+            class="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
+            aria-label="Next slide"
+        >
+            <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
 
         <div 
             id="skills-carousel"
@@ -72,11 +72,12 @@ const t = useTranslations(lang);
             {
                 skills.map((skill, index) => {
                     const randomRotate = Math.random() * 8 - 4;
+                    const delay = index * 50; 
                     return (
                         <div
-                            data-index={index}
-                            class="skill-card group relative shrink-0 w-[85vw] xxs:w-[300px] sm:w-[350px] md:w-full snap-center"
-                            style={`--hover-rotate: ${randomRotate}deg`}
+                            data-index={index}nsition-all duration-500 ease-out: fluidità
+                            class="skill-card skill-entry-animate opacity-0 scale-75 blur-sm transition-all duration-500 ease-out group relative shrink-0 w-[85vw] xxs:w-[300px] sm:w-[350px] md:w-full snap-center"
+                            style={`--hover-rotate: ${randomRotate}deg; transition-delay: ${delay}ms;`}
                         >
                             <div class={`absolute -inset-0.5 bg-gradient-to-r from-[var(--color-primary)] ${skill.neon} rounded-xl blur opacity-0 group-hover:opacity-75 transition duration-500 group-hover:duration-200`} />
                             <div class="relative flex flex-row md:flex-col gap-4 rounded-xl border border-gray-200 dark:border-border-dark bg-white dark:bg-surface-dark p-4 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:rotate-[var(--hover-rotate)] cursor-default h-full items-start md:justify-between">
@@ -134,38 +135,28 @@ const t = useTranslations(lang);
     const cards = document.querySelectorAll('.skill-card');
 
     if (carousel && prevBtn && nextBtn) {
-        // Calcola quanto scrollare (larghezza card + gap)
         const getScrollAmount = () => {
             const card = cards[0] as HTMLElement;
             return card ? card.offsetWidth + 16 : 300;
         };
 
-        // PREV BUTTON: Logica Infinite Scroll
         prevBtn.addEventListener('click', () => {
-            // Tolleranza di 10px perché lo scroll non è sempre preciso al pixel
             if (carousel.scrollLeft <= 10) {
-                // Se siamo all'inizio, vai alla fine
                 carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
             } else {
-                // Altrimenti torna indietro normalmente
                 carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
             }
         });
 
-        // NEXT BUTTON: Logica Infinite Scroll
         nextBtn.addEventListener('click', () => {
             const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
-            
-            // Se siamo alla fine (con tolleranza di 10px), torna all'inizio
             if (carousel.scrollLeft >= maxScrollLeft - 10) {
                 carousel.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                // Altrimenti vai avanti normalmente
                 carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
             }
         });
 
-        // Click sui Dots (Resta invariato)
         dots.forEach((dot) => {
             dot.addEventListener('click', (e) => {
                 const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
@@ -176,13 +167,13 @@ const t = useTranslations(lang);
             });
         });
 
-        // Intersection Observer (Resta invariato)
-        const observerOptions = {
-            root: carousel,
+        // --- OBSERVER 1: PALLINI DEL CAROSELLO (Scroll Spy) ---
+        const dotsObserverOptions = {
+            root: carousel, // Guarda DENTRO il carosello
             threshold: 0.5
         };
 
-        const observer = new IntersectionObserver((entries) => {
+        const dotsObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const index = entry.target.getAttribute('data-index');
@@ -193,8 +184,32 @@ const t = useTranslations(lang);
                     }
                 }
             });
-        }, observerOptions);
+        }, dotsObserverOptions);
 
-        cards.forEach(card => observer.observe(card));
+        cards.forEach(card => dotsObserver.observe(card));
     }
+
+    // --- OBSERVER 2: ANIMAZIONE DI INGRESSO (Nuovo) ---
+    // Questo observer guarda la viewport globale per attivare l'animazione "Pop-in"
+    const animationObserverOptions = {
+        root: null, // Guarda la finestra del browser
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const animationObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Rimuove le classi che nascondono/rimpiccioliscono l'elemento
+                entry.target.classList.remove('opacity-0', 'scale-75', 'blur-sm');
+                // Smette di osservare una volta animato
+                animationObserver.unobserve(entry.target);
+            }
+        });
+    }, animationObserverOptions);
+
+    // Seleziona le card per l'animazione d'ingresso
+    document.querySelectorAll('.skill-entry-animate').forEach((el) => {
+        animationObserver.observe(el);
+    });
 </script>

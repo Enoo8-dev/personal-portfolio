@@ -51,10 +51,17 @@ const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
             displayedProjects.map((project, index) => (
-                <ProjectCard 
-                    project={project} 
-                    className={index >= 3 ? "hidden md:block" : ""}
-                />
+                <div 
+                    class={`
+                        project-animate opacity-0 translate-y-8 transition-all duration-700 ease-out
+                        ${index >= 3 ? "hidden md:block" : ""}
+                    `}
+                    style={`transition-delay: ${index * 100}ms`}
+                >
+                    <ProjectCard 
+                        project={project} 
+                    />
+                </div>
             ))
         }
     </div>
@@ -71,3 +78,27 @@ const viewAllLink = lang === 'it' ? '/it/projects' : '/projects';
         </a>
     </div>
 </section>
+
+<script>
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // L'animazione parte quando il 15% dell'elemento è visibile
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Rimuove le classi che nascondono l'elemento
+                entry.target.classList.remove('opacity-0', 'translate-y-8');
+                // Smette di osservare l'elemento una volta animato
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Seleziona tutti gli elementi con la classe .project-animate
+    document.querySelectorAll('.project-animate').forEach((el) => {
+        observer.observe(el);
+    });
+</script>
