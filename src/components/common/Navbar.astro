@@ -41,78 +41,80 @@ const getHref = (anchor: string) => {
 };
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-solid border-gray-200 dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
-    <div class="relative z-50 flex h-16 items-center justify-between px-4 sm:px-10 max-w-[1200px] mx-auto w-full bg-inherit">
-        <a href={homeLink} class="flex items-center gap-2 text-primary dark:text-white">
-            <div class="flex items-center justify-center size-8 rounded-lg bg-primary/10 dark:bg-white/10">
-                <Logo className="w-5 h-5 text-primary dark:text-white" />
-            </div>
-            <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] font-display">
-                Federico Benini
-            </h2>
-        </a>
-        
-        <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-            <div class="flex items-center gap-9">
-                {links.map(link => (
-                    <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors"
-                        href={getHref(link.href)}>
-                        {link.name}
-                    </a>
-                ))}
-            </div>
-            <div class="h-6 w-px bg-gray-300 dark:bg-border-dark mx-2"></div>
-            <ThemeToggle />
-            
-            <div class="flex items-center gap-2 ml-2 text-sm font-medium">
-                <a 
-                    href={enLink} 
-                    class={`lang-switch ${lang === 'en' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
-                >
-                    EN
-                </a>
-                <span class="text-slate-300 dark:text-slate-600">|</span>
-                <a 
-                    href={itLink} 
-                    class={`lang-switch ${lang === 'it' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
-                >
-                    IT
-                </a>
-            </div>
-        </nav>
-        
-        <div class="flex items-center gap-4 md:hidden">
-            <ThemeToggle />
-            <div class="flex items-center gap-2 ml-2 text-sm font-medium">
-                <a 
-                    href={enLink} 
-                    class={`lang-switch ${lang === 'en' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
-                >
-                    EN
-                </a>
-                <span class="text-slate-300 dark:text-slate-600">|</span>
-                <a 
-                    href={itLink} 
-                    class={`lang-switch ${lang === 'it' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
-                >
-                    IT
-                </a>
-            </div>
-
-            <button id="mobile-menu-btn" class="group relative z-50 p-2 text-slate-600 dark:text-slate-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 rounded-md transition-colors w-10 h-10">
-                <div class="relative w-5 h-3.5 overflow-hidden">
-                    <span class="absolute top-0 left-0 w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out 
-                        group-hover:w-3/4 group-[.open]:w-full
-                        group-[.open]:top-1/2 group-[.open]:-translate-y-1/2 group-[.open]:rotate-45"></span>
-                    
-                    <span class="absolute top-1/2 left-0 w-full h-0.5 bg-current rounded-full -translate-y-1/2 transition-all duration-300 ease-in-out 
-                        group-[.open]:opacity-0 group-[.open]:translate-x-full"></span>
-                    
-                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out 
-                        group-hover:w-1/2 group-[.open]:w-full
-                        group-[.open]:bottom-1/2 group-[.open]:translate-y-1/2 group-[.open]:-rotate-45"></span> 
+<header class="sticky top-0 z-50 w-full">
+    <div class="relative z-50 w-full border-b border-solid border-gray-200 dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+        <div class="flex h-16 items-center justify-between px-4 sm:px-10 max-w-[1200px] mx-auto w-full">
+            <a href={homeLink} class="flex items-center gap-2 text-primary dark:text-white">
+                <div class="flex items-center justify-center size-8 rounded-lg bg-primary/10 dark:bg-white/10">
+                    <Logo className="w-5 h-5 text-primary dark:text-white" />
                 </div>
-            </button>
+                <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                    Federico Benini
+                </h2>
+            </a>
+            
+            <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
+                <div class="flex items-center gap-9">
+                    {links.map(link => (
+                        <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors"
+                            href={getHref(link.href)}>
+                            {link.name}
+                        </a>
+                    ))}
+                </div>
+                <div class="h-6 w-px bg-gray-300 dark:bg-border-dark mx-2"></div>
+                <ThemeToggle />
+                
+                <div class="flex items-center gap-2 ml-2 text-sm font-medium">
+                    <a 
+                        href={enLink} 
+                        class={`lang-switch ${lang === 'en' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
+                    >
+                        EN
+                    </a>
+                    <span class="text-slate-300 dark:text-slate-600">|</span>
+                    <a 
+                        href={itLink} 
+                        class={`lang-switch ${lang === 'it' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
+                    >
+                        IT
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="flex items-center gap-4 md:hidden">
+                <ThemeToggle />
+                <div class="flex items-center gap-2 ml-2 text-sm font-medium">
+                    <a
+                        href={enLink} 
+                        class={`lang-switch ${lang === 'en' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
+                    >
+                        EN
+                    </a>
+                    <span class="text-slate-300 dark:text-slate-600">|</span>
+                    <a 
+                        href={itLink} 
+                        class={`lang-switch ${lang === 'it' ? "text-primary dark:text-white pointer-events-none" : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors"}`}
+                    >
+                        IT
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="group relative z-50 p-2 text-slate-600 dark:text-slate-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 rounded-md transition-colors w-10 h-10">
+                    <div class="relative w-5 h-3.5 overflow-hidden">
+                        <span class="absolute top-0 left-0 w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out 
+                            group-hover:w-3/4 group-[.open]:w-full
+                            group-[.open]:top-1/2 group-[.open]:-translate-y-1/2 group-[.open]:rotate-45"></span>
+                        
+                        <span class="absolute top-1/2 left-0 w-full h-0.5 bg-current rounded-full -translate-y-1/2 transition-all duration-300 ease-in-out 
+                            group-[.open]:opacity-0 group-[.open]:translate-x-full"></span>
+                        
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out 
+                            group-hover:w-1/2 group-[.open]:w-full
+                            group-[.open]:bottom-1/2 group-[.open]:translate-y-1/2 group-[.open]:-rotate-45"></span> 
+                    </div>
+                </button>
+            </div>
         </div>
     </div>
 
