@@ -3,7 +3,7 @@ name: Deploy Self-Hosted
 on:
   push:
     branches:
-      - main  # Esegue il deploy quando fai push su main
+      - main
   repository_dispatch:  
       types: [cms_update]
 
@@ -13,9 +13,16 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # <--- Questo dice a GitHub di usare il TUO server
+    runs-on: self-hosted
 
     steps:
+    - name: 🛡️ Nascondi dati sensibili
+      run: |
+        # Maschera il percorso e l'utente nei log
+        echo "::add-mask::${{ secrets.TARGET_DIR }}"
+        echo "::add-mask::/home/eno"
+        echo "::add-mask::webserver-ubuntu"
+
     - name: 🚚 Scarica il codice
       uses: actions/checkout@v4
 
@@ -30,24 +37,20 @@ jobs:
     - name: 🛠️ Build del progetto
       run: npm run build
       env:
-        # Prende le chiavi dai Secrets di GitHub che abbiamo impostato prima
         PUBLIC_WP_API_URL: ${{ secrets.PUBLIC_WP_API_URL }}
         PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.CAPTCHA_SITE_KEY }}
         PUBLIC_GTM_ID: ${{ secrets.PUBLIC_GTM_ID }}
 
     - name: 🚀 Pubblica sul Server
       run: |
-        # IMPOSTA QUI IL PERCORSO REALE DEL TUO SITO SUL SERVER
-        TARGET_DIR="/var/www/beninifederico.it"
+        # Usa il segreto invece del percorso scritto in chiaro
+        TARGET_DIR="${{ secrets.TARGET_DIR }}"
 
         echo "Sto copiando i file in $TARGET_DIR..."
         
-        # Crea la cartella se non esiste
-        mkdir -p $TARGET_DIR
+        mkdir -p "$TARGET_DIR"
         
-        # Copia i file generati (dist) nella cartella del server
-        # -r = ricorsivo (tutte le cartelle)
-        # -v = verbose (ti mostra cosa copia)
-        cp -r dist/* $TARGET_DIR/
+        # Rimuovo -v (verbose) per evitare che stampi ogni singolo file nei log pubblici
+        cp -r dist/* "$TARGET_DIR/"
         
         echo "✅ Deploy completato!"
