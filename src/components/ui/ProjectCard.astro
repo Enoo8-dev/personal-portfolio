@@ -38,7 +38,8 @@ const { project, className = "" } = Astro.props;
     <Image
       src={project.data.image}
       alt={project.data.title}
-      width={800}    
+      width={800}   
+      height={500} 
       inferSize={true} 
       format="webp"  
       class="absolute inset-0 z-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
