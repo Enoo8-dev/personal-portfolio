@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from '../../i18n/utils';
 import QrCodeVCF from '../common/QrCodeVCF.astro';
+import { personalInfo } from '../../data/business';
 
 interface Props {
   lang: 'en' | 'it';
@@ -8,14 +9,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const profile = {
-  name: 'Federico Benini',
-  role: 'Full Stack Developer',
-  location: 'Verona, Italy',
-  avatar: '/images/avatar.jpg',
-  vcardLink: '/federico-benini.vcf',
-};
 ---
 
 <div class="w-full min-h-[80vh] flex items-center justify-center p-4">
@@ -57,8 +50,8 @@ const profile = {
         class="size-32 rounded-full border-4 border-white dark:border-surface-dark overflow-hidden shadow-md bg-gray-200"
       >
         <img
-          src={profile.avatar}
-          alt={profile.name}
+          src={personalInfo.avatar}
+          alt={personalInfo.fullName}
           class="w-full h-full object-cover"
         />
       </div>
@@ -69,21 +62,21 @@ const profile = {
       <!-- Info -->
       <div class="text-center">
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
-          {profile.name}
+          {personalInfo.fullName}
         </h1>
-        <p class="text-primary font-medium mt-1">{profile.role}</p>
+        <p class="text-primary font-medium mt-1">{personalInfo.role}</p>
         <div
           class="flex items-center justify-center gap-2 mt-2 text-slate-500 dark:text-slate-400 text-sm"
         >
           <span class="material-symbols-outlined text-base">location_on</span>
-          <span>{profile.location}</span>
+          <span>{personalInfo.location}</span>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="mt-8 flex flex-col gap-3">
         <a
-          href={profile.vcardLink}
+          href={personalInfo.vCardLink}
           download
           type="text/vcard"
           target="_blank"

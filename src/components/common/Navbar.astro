@@ -2,6 +2,7 @@
 import { useTranslations } from '../../i18n/utils';
 import ThemeToggle from "../ui/ThemeToggle.astro";
 import Logo from "./Logo.astro";
+import { personalInfo } from '../../data/business';
 
 interface Props {
     lang: 'en' | 'it';
@@ -49,7 +50,7 @@ const getHref = (anchor: string) => {
                     <Logo className="w-5 h-5 text-primary dark:text-white" />
                 </div>
                 <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] font-display">
-                    Federico Benini
+                    {personalInfo.fullName}
                 </h2>
             </a>
             
