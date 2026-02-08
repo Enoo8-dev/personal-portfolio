@@ -18,6 +18,13 @@ const socialLinks = [
         name: "LinkedIn",
         href: "https://www.linkedin.com/in/federico-benini0810/",
         iconPath: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+    },
+    {
+        name: "vCard",
+        href: lang === 'it' ? '/it/connect' : '/connect',
+        svg: `<svg width="100%" height="100%" viewBox="0 0 64 64" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" stroke-width="4"><polyline points="44 8 44 16 52 16"></polyline><polygon points="52 16 44 8 12 8 12 56 52 56 52 16"></polygon><ellipse cx="32" cy="28" rx="6" ry="8"></ellipse><path d="M27 32.73s-5 1.34-6 4A16.42 16.42 0 0 0 20 44h24a16.42 16.42 0 0 0-1-7.27c-1-2.66-6-4-6-4"></path></svg>`,
+        featured: true,
+        inSite: true
     }
 ];
 ---
@@ -78,17 +85,27 @@ const socialLinks = [
 
                 <div class="flex gap-4 mt-8">
                     {socialLinks.map(social => (
-                        <a 
-                            aria-label={social.name}
-                            class="size-10 rounded-full border border-gray-300 dark:border-border-dark flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300" 
-                            href={social.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d={social.iconPath}></path>
-                            </svg>
-                        </a>
+                        <div class="relative flex items-center justify-center">
+                            {social.featured && (
+                                <span class="absolute inset-0 rounded-full bg-primary/40 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></span>
+                            )}
+                            <div class="absolute inset-0 rounded-full bg-white dark:bg-surface-dark"></div>
+                            
+                            <a 
+                                aria-label={social.name}
+                                class="relative z-10 size-10 rounded-full border border-gray-300 dark:border-border-dark flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300" 
+                                href={social.href}
+                                {...(social.inSite ? { 'data-internal-link': true } : { target: "_blank", rel: "noopener noreferrer" })}
+                            >
+                                {'iconPath' in social ? (
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d={social.iconPath}></path>
+                                    </svg>
+                                ) : (
+                                    <div class="w-5 h-5 flex items-center justify-center" set:html={social.svg} />
+                                )}
+                            </a>
+                        </div>
                     ))}
                 </div>
             </div>

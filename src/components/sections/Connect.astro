@@ -1,0 +1,197 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import QrCodeVCF from '../common/QrCodeVCF.astro';
+
+interface Props {
+  lang: 'en' | 'it';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const profile = {
+  name: 'Federico Benini',
+  role: 'Full Stack Developer',
+  location: 'Verona, Italy',
+  avatar: '/images/avatar.jpg',
+  vcardLink: '/federico-benini.vcf',
+};
+---
+
+<div class="w-full min-h-[80vh] flex items-center justify-center p-4">
+  <div
+    class="relative w-full max-w-sm bg-white dark:bg-surface-dark rounded-3xl shadow-2xl border border-gray-100 dark:border-border-dark transition-colors"
+  >
+    <div id="tooltip-wrapper" class="absolute top-4 right-4 z-20 group">
+      <!-- Icona Info -->
+      <button
+        id="tooltip-btn"
+        class="flex items-center justify-center text-white/50 hover:text-white transition-colors cursor-help"
+        aria-label="Info Card"
+      >
+        <span class="material-symbols-outlined">info</span>
+      </button>
+
+      <!-- Contenuto Tooltip -->
+      <div
+        class="absolute right-0 top-full mt-2 w-56 p-3 bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-sm text-white text-xs leading-relaxed rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible group-[.tooltip-active]:opacity-100 group-[.tooltip-active]:visible transition-all duration-200 transform translate-y-[-8px] group-hover:translate-y-0 group-[.tooltip-active]:translate-y-0 pointer-events-none border border-white/10"
+      >
+        <div
+          class="absolute -top-1 right-1.5 w-2 h-2 bg-slate-900/95 dark:bg-slate-800/95 rotate-45 border-l border-t border-white/10"
+        >
+        </div>
+        {
+          t('contact.vcard.tooltip_info')
+        }
+      </div>
+    </div>
+    <!-- Background Decorativo -->
+    <div class="h-32 bg-gradient-to-r from-primary to-blue-600 rounded-t-3xl">
+    </div>
+
+    <!-- Avatar-->
+    <div
+      class="absolute top-32 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+    >
+      <div
+        class="size-32 rounded-full border-4 border-white dark:border-surface-dark overflow-hidden shadow-md bg-gray-200"
+      >
+        <img
+          src={profile.avatar}
+          alt={profile.name}
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+
+    <!-- Contenuto Principale -->
+    <div class="px-6 pb-8 pt-20 relative">
+      <!-- Info -->
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
+          {profile.name}
+        </h1>
+        <p class="text-primary font-medium mt-1">{profile.role}</p>
+        <div
+          class="flex items-center justify-center gap-2 mt-2 text-slate-500 dark:text-slate-400 text-sm"
+        >
+          <span class="material-symbols-outlined text-base">location_on</span>
+          <span>{profile.location}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-8 flex flex-col gap-3">
+        <a
+          href={profile.vcardLink}
+          download
+          type="text/vcard"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center gap-3 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+        >
+          <span class="material-symbols-outlined">person_add</span>
+          {t('contact.vcard.download')}
+        </a>
+
+        <button
+          id="toggle-qr"
+          class="flex items-center justify-center gap-3 w-full py-3.5 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+        >
+          <span class="material-symbols-outlined">qr_code_2</span>
+          {t('contact.vcard.showQR')}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="qr-overlay"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300"
+  >
+    <div
+      class="bg-white dark:bg-surface-dark p-8 rounded-3xl shadow-2xl flex flex-col items-center max-w-sm w-[90%] mx-4 transform scale-90 transition-all duration-300 relative"
+      id="qr-content"
+    >
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">
+        {t('contact.vcard.popup.title')}
+      </h3>
+      <div class="p-4 bg-white rounded-2xl shadow-inner border border-gray-100">
+        <QrCodeVCF
+          className="size-48 text-slate-900 dark:text-primary transition-colors duration-300"
+          color="currentColor"
+        />
+      </div>
+      <button
+        id="close-qr"
+        class="mt-8 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex flex-col items-center gap-1 cursor-pointer"
+      >
+        <span class="material-symbols-outlined text-3xl">close</span>
+        <span class="text-sm">{t('contact.vcard.popup.close')}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-qr');
+  const closeBtn = document.getElementById('close-qr');
+  const overlay = document.getElementById('qr-overlay');
+  const content = document.getElementById('qr-content');
+
+  const tooltipWrapper = document.getElementById('tooltip-wrapper');
+  const tooltipBtn = document.getElementById('tooltip-btn');
+
+  // Mostra il tooltip al caricamento
+  setTimeout(() => {
+    tooltipWrapper?.classList.add('tooltip-active');
+  }, 1000);
+
+  // Nascondi se si clicca ovunque nella pagina (tranne sul pulsante stesso)
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    if (tooltipWrapper && !tooltipBtn?.contains(target)) {
+      tooltipWrapper.classList.remove('tooltip-active');
+    }
+  });
+
+  // Toggle se si clicca specificamente sull'icona (utile per mobile)
+  tooltipBtn?.addEventListener('click', (e) => {
+    e.stopPropagation(); // Evita che il click arrivi al document e lo chiuda subito
+    tooltipWrapper?.classList.toggle('tooltip-active');
+  });
+
+  function toggleOverlay() {
+    if (!overlay || !content) return;
+    const isHidden = overlay.classList.contains('opacity-0');
+
+    if (isHidden) {
+      // Show
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-90');
+      content.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Hide
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-90');
+      document.body.style.overflow = '';
+    }
+  }
+
+  toggleBtn?.addEventListener('click', toggleOverlay);
+  closeBtn?.addEventListener('click', toggleOverlay);
+
+  // Chiudi cliccando sullo sfondo scuro
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) toggleOverlay();
+  });
+
+  // Chiudi con ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay?.classList.contains('opacity-0')) {
+      toggleOverlay();
+    }
+  });
+</script>
