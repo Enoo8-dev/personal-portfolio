@@ -68,7 +68,7 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ;
         <meta property="og:description" content={description} />
         <meta property="og:image" content={new URL(image, Astro.url)} />
         <meta property="og:site_name" content="Federico Benini Portfolio" />
-        <meta property="og:locale" content={locales[lang]} />
+        <meta property="og:locale" content={locales[lang as 'en' | 'it']} />
         <meta property="og:locale:alternate" content={lang === 'en' ? locales.it : locales.en} />
 
         <!-- Twitter -->
