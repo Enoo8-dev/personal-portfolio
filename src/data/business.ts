@@ -14,7 +14,7 @@ export const personalInfo = {
     email: "me@beninifederico.it",
 
     // Assets e File
-    avatar: "/images/avatar.jpg",
+    avatar: "/images/avatar.svg",
     vCardLink: "/federico-benini.vcf",
     domain: "beninifederico.it",
     
