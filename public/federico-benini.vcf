@@ -13,6 +13,7 @@ item2.URL:https://beninifederico.it
 item2.X-ABLabel:Portfolio
 item2.X-ABOrder:2
 
+PHOTO;VALUE=URI:https://beninifederico.it/images/avatar.png
 
 item3.URL:https://github.com/Enoo8-dev
 item3.X-ABLabel:GitHub
