@@ -84,7 +84,7 @@ const t = useTranslations(lang);
                                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-auto md:w-full shrink-0">
                                     <div class={`shrink-0 size-12 md:size-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${skill.iconBg} ${skill.iconColor}`}>
                                         {skill.imageSrc ? (
-                                            <img src={skill.imageSrc} alt={skill.name} loading="lazy" class="w-7 h-7 md:w-6 md:h-6 object-contain" />
+                                            <img src={skill.imageSrc} alt={skill.name} loading="eager" fetchpriority="high" class="w-7 h-7 md:w-6 md:h-6 object-contain" />
                                         ) : (
                                             <span class="material-symbols-outlined text-[28px] md:text-[24px]">
                                                 {skill.icon}

@@ -3,6 +3,7 @@
 // import type { CollectionEntry } from "astro:content"; <--- CANCELLA QUESTO
 import type { Project } from "../../lib/wp"; // <--- AGGIUNGI QUESTO
 import { Image } from "astro:assets";
+import placeholderImage from "../../assets/images/placeholder-card-projects.webp";
 
 interface Props {
   // 2. Aggiorna il tipo atteso
@@ -11,6 +12,11 @@ interface Props {
 }
 
 const { project, className = "" } = Astro.props;
+
+const imageSrc = project.data.image ? project.data.image : placeholderImage;
+const imageProps = typeof imageSrc === 'string'
+  ? { src: imageSrc, inferSize: true }
+  : { src: imageSrc };
 ---
 
 <div 
@@ -36,12 +42,11 @@ const { project, className = "" } = Astro.props;
     >
     </div> -->
     <Image
-      src={project.data.image}
+      {...imageProps as any}
       alt={project.data.title}
-      width={800}   
-      height={500} 
-      inferSize={true} 
+      width={800}
       format="webp"  
+      quality="mid"
       class="absolute inset-0 z-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
       style="transform: translateZ(0);"
     />
