@@ -8,6 +8,7 @@ import { getWPProjects } from '../lib/wp';
 
 // 2. Importiamo le utility per le lingue (che avevi rimosso)
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import ArrowBackOutlined from '../components/common/icons/ArrowBackOutlined.astro';
 
 // 3. Setup Lingua
 const lang = getLangFromUrl(Astro.url);
@@ -48,9 +49,7 @@ const tagCounts = allTags.reduce((acc, tag) => {
                 href="/" 
                 class="group relative inline-flex items-center gap-1 text-sm font-bold mb-4 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors w-fit"
             >
-                <span class="material-symbols-outlined !text-lg transition-transform duration-300 group-hover:-translate-x-1">
-                    arrow_back
-                </span>
+                <ArrowBackOutlined className="!text-lg transition-transform duration-300 group-hover:-translate-x-1 w-4 h-4" />
                 
                 <span>{t("projects.page.backhome")}</span>
 

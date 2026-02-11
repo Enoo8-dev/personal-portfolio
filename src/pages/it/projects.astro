@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ProjectCard from '../../components/ui/ProjectCard.astro';
 import ScrollToTop from '../../components/ui/ScrollToTop.astro';
+import ArrowBackOutlined from '../../components/common/icons/ArrowBackOutlined.astro';
 
 // 1. Importiamo la funzione per WordPress
 import { getWPProjects } from '../../lib/wp';
@@ -50,9 +51,7 @@ const tagCounts = allTags.reduce((acc, tag) => {
                 href="/it" 
                 class="group relative inline-flex items-center gap-1 text-sm font-bold mb-4 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors w-fit"
             >
-                <span class="material-symbols-outlined !text-lg transition-transform duration-300 group-hover:-translate-x-1">
-                    arrow_back
-                </span>
+                <ArrowBackOutlined className="!text-lg transition-transform duration-300 group-hover:-translate-x-1 w-4 h-4" />
                 
                 <span>{t("projects.page.backhome")}</span>
 

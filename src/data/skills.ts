@@ -55,7 +55,7 @@ export const skills: Skill[] = [
     },
     {
         name: "TypeScript",
-        icon: "integration_instructions",
+        icon: "integration_instruction",
         type: "Language",
         description: {
             en: "Type-safe code for better maintainability and fewer bugs.",

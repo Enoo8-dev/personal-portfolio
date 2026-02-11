@@ -4,7 +4,8 @@
 import type { Project } from "../../lib/wp"; // <--- AGGIUNGI QUESTO
 import { Image } from "astro:assets";
 import placeholderImage from "../../assets/images/placeholder-card-projects.webp";
-
+import CodeOutlined from "../common/icons/CodeOutlined.astro";
+import ArrowOutwardOutlined from "../common/icons/ArrowOutwardOutlined.astro";
 interface Props {
   // 2. Aggiorna il tipo atteso
   project: Project;
@@ -87,7 +88,7 @@ const imageProps = typeof imageSrc === 'string'
               target="_blank"
               class="flex-1 bg-white/10 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer no-underline"
             >
-              <span class="material-symbols-outlined text-lg">code</span>
+              <CodeOutlined className="text-lg w-8 h-8" />
               <span class="text-xs font-bold uppercase tracking-widest">Code</span>
             </a>
           )
@@ -100,7 +101,7 @@ const imageProps = typeof imageSrc === 'string'
               target="_blank"
               class="flex-1 bg-white/10 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer no-underline"
             >
-              <span class="material-symbols-outlined text-lg">arrow_outward</span>
+              <ArrowOutwardOutlined className="text-lg w-8 h-8" />
               <span class="text-xs font-bold uppercase tracking-widest">Live</span>
             </a>
           )

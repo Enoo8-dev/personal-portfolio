@@ -1,6 +1,15 @@
 ---
 import { useTranslations } from "../../i18n/utils";
 import { skills } from "../../data/skills";
+import ChevronLeftOutlined from "../common/icons/ChevronLeftOutlined.astro";
+import ChevronRightOutlined from "../common/icons/ChevronRightOutlined.astro";
+import DnsOutlined from "../common/icons/DnsOutlined.astro";
+import IntegrationInstructionOutlined from "../common/icons/IntegrationInstructionOutlined.astro";
+import StyleOutlined from "../common/icons/StyleOutlined.astro";
+import DatabaseOutlined from "../common/icons/DatabaseOutlined.astro";
+import TerminalOutlined from "../common/icons/TerminalOutlined.astro";
+import CommitOutlined from "../common/icons/CommitOutlined.astro";
+
 
 interface Props {
     lang: "en" | "it";
@@ -8,6 +17,15 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+const icons_map: Record<string, any> = {
+    "dns": DnsOutlined,
+    "integration_instruction": IntegrationInstructionOutlined,
+    "style": StyleOutlined,
+    "database": DatabaseOutlined,
+    "terminal": TerminalOutlined,
+    "commit": CommitOutlined
+};
 ---
 
 <style>
@@ -54,7 +72,7 @@ const t = useTranslations(lang);
             class="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
             aria-label="Previous slide"
         >
-            <span class="material-symbols-outlined text-xl">chevron_left</span>
+            <ChevronLeftOutlined className="text-xl w-6 h-6" />
         </button>
 
         <button 
@@ -62,7 +80,7 @@ const t = useTranslations(lang);
             class="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm border border-gray-200 dark:border-border-dark text-slate-700 dark:text-slate-300 w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-0 cursor-pointer"
             aria-label="Next slide"
         >
-            <span class="material-symbols-outlined text-xl">chevron_right</span>
+            <ChevronRightOutlined className="text-xl w-6 h-6" />
         </button>
 
         <div 
@@ -73,6 +91,7 @@ const t = useTranslations(lang);
                 skills.map((skill, index) => {
                     const randomRotate = Math.random() * 8 - 4;
                     const delay = index * 50; 
+                    const IconComponent = skill.icon ? icons_map[skill.icon] : null;
                     return (
                         <div
                             data-index={index}nsition-all duration-500 ease-out: fluidità
@@ -86,9 +105,7 @@ const t = useTranslations(lang);
                                         {skill.imageSrc ? (
                                             <img src={skill.imageSrc} alt={skill.name} loading="eager" fetchpriority="high" class="w-7 h-7 md:w-6 md:h-6 object-contain" />
                                         ) : (
-                                            <span class="material-symbols-outlined text-[28px] md:text-[24px]">
-                                                {skill.icon}
-                                            </span>
+                                            IconComponent && <IconComponent className="w-7 h-7 md:w-6 md:h-6" />
                                         )}
                                     </div>
                                     <span class="hidden md:inline-flex text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">

@@ -1,4 +1,5 @@
 ---
+import ArrowUpwardOutlined from "../common/icons/ArrowUpwardOutlined.astro"
 ---
 
 <button
@@ -6,9 +7,7 @@
     aria-label="Back to top"
     class="fixed bottom-8 right-8 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white shadow-lg shadow-primary/30 translate-y-20 opacity-0 invisible transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900 cursor-pointer overflow-hidden"
 >
-    <span id="scroll-icon" class="material-symbols-outlined !text-2xl font-bold leading-none">
-        arrow_upward
-    </span>
+    <ArrowUpwardOutlined id="scroll-icon" className="!text-2xl font-bold leading-none w-6 h-6" />
 </button>
 
 <style>

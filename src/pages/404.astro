@@ -1,6 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BugReportOutlined from "../components/common/icons/BugReportOutlined.astro";
+import ArrowBackOutlined from "../components/common/icons/ArrowBackOutlined.astro";
+import MailOutlined from "../components/common/icons/MailOutlined.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -78,10 +81,7 @@ const t = useTranslations(lang);
                         <div
                             class="absolute -right-12 top-0 bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark p-3 rounded-lg shadow-xl hidden sm:block rotate-12"
                         >
-                            <span
-                                class="material-symbols-outlined text-red-500 text-3xl"
-                                >bug_report</span
-                            >
+                            <BugReportOutlined className="text-red-500 text-3xl w-12 h-12" />
                         </div>
                     </div>
                     <div
@@ -142,20 +142,14 @@ const t = useTranslations(lang);
                             class="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 group"
                             href={lang === 'it' ? '/it' : '/'}
                         >
-                            <span
-                                class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform"
-                                >arrow_back</span
-                            >
+                            <ArrowBackOutlined className="text-xl group-hover:-translate-x-1 transition-transform w-8 h-8" />
                             {t('404.back')}
                         </a>
                         <a
                             class="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark hover:border-primary/50 text-slate-900 dark:text-white rounded-lg font-bold transition-all hover:shadow-lg"
                             href={lang === 'it' ? '/it#contact' : '/#contact'}
                         >
-                            <span
-                                class="material-symbols-outlined text-xl text-primary"
-                                >mail</span
-                            >
+                            <MailOutlined className="text-primary text-xl w-8 h-8" />
                             {t('404.contact')}
                         </a>
                     </div>

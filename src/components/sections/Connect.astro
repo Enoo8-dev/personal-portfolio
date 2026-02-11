@@ -2,6 +2,11 @@
 import { useTranslations } from '../../i18n/utils';
 import QrCodeVCF from '../common/QrCodeVCF.astro';
 import { personalInfo } from '../../data/business';
+import InfoOutlined from '../common/icons/InfoOutlined.astro';
+import LocationOnOutlined from '../common/icons/LocationOnOutlined.astro';
+import PersonAddOutlined from '../common/icons/PersonAddOutlined.astro';
+import QrCodeOutlined from '../common/icons/QrCodeOutlined.astro';
+import CloseOutlined from '../common/icons/CloseOutlined.astro';
 
 interface Props {
   lang: 'en' | 'it';
@@ -22,7 +27,7 @@ const t = useTranslations(lang);
         class="flex items-center justify-center text-white/50 hover:text-white transition-colors cursor-help"
         aria-label="Info Card"
       >
-        <span class="material-symbols-outlined">info</span>
+        <InfoOutlined className="text-2xl h-6 w-6" />
       </button>
 
       <!-- Contenuto Tooltip -->
@@ -68,7 +73,7 @@ const t = useTranslations(lang);
         <div
           class="flex items-center justify-center gap-2 mt-2 text-slate-500 dark:text-slate-400 text-sm"
         >
-          <span class="material-symbols-outlined text-base">location_on</span>
+          <LocationOnOutlined className="text-base h-5 w-5" />
           <span>{personalInfo.location}</span>
         </div>
       </div>
@@ -83,7 +88,7 @@ const t = useTranslations(lang);
           rel="noopener noreferrer"
           class="flex items-center justify-center gap-3 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold hover:opacity-90 transition-opacity"
         >
-          <span class="material-symbols-outlined">person_add</span>
+          <PersonAddOutlined className="text-2xl h-6 w-6" />
           {t('contact.vcard.download')}
         </a>
 
@@ -91,7 +96,7 @@ const t = useTranslations(lang);
           id="toggle-qr"
           class="flex items-center justify-center gap-3 w-full py-3.5 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
         >
-          <span class="material-symbols-outlined">qr_code_2</span>
+          <QrCodeOutlined className="text-2xl h-6 w-6" />
           {t('contact.vcard.showQR')}
         </button>
       </div>
@@ -119,7 +124,7 @@ const t = useTranslations(lang);
         id="close-qr"
         class="mt-8 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex flex-col items-center gap-1 cursor-pointer"
       >
-        <span class="material-symbols-outlined text-3xl">close</span>
+        <CloseOutlined className="text-3xl h-8 w-8" />
         <span class="text-sm">{t('contact.vcard.popup.close')}</span>
       </button>
     </div>
