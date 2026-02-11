@@ -31,13 +31,6 @@ const itLink = normalizedPath === '/' ? '/it' : `/it${normalizedPath}`;
 const homeLink = lang === 'it' ? '/it' : '/';
 
 const getHref = (anchor: string) => {
-  const pathForCheck = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
-  const isHome = pathForCheck === '' || pathForCheck === '/' || pathForCheck === '/it';
-  
-  if (isHome) {
-    return anchor; 
-  }
-  
   return `${homeLink}${anchor}`;
 };
 ---
@@ -192,19 +185,41 @@ const getHref = (anchor: string) => {
     });
 
     // --- SCROLL FLUIDO ---
-    const navLinks = document.querySelectorAll('a[href^="#"]');
+    // Seleziona tutti i link che contengono un hash (#)
+    const navLinks = document.querySelectorAll('a[href*="#"]');
+    
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (!href || href === '#') return;
-        const target = document.querySelector(href);
-        if (target) {
-            const headerOffset = 60; 
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-        }
+            const anchor = link as HTMLAnchorElement;
+            const href = anchor.getAttribute('href');
+            
+            // Se non c'è href o è solo "#", ignora
+            if (!href || href === '#') return;
+
+            // Costruiamo gli oggetti URL per confrontarli
+            const targetUrl = new URL(anchor.href, window.location.origin);
+            const currentUrl = new URL(window.location.href);
+
+            // Controlliamo se il link punta alla stessa pagina (stesso path e stessi query params)
+            if (targetUrl.pathname === currentUrl.pathname && targetUrl.search === currentUrl.search) {
+                // È uno scroll nella stessa pagina
+                e.preventDefault();
+                
+                const targetId = targetUrl.hash; // es. #about
+                const target = document.querySelector(targetId);
+                
+                if (target) {
+                    const headerOffset = 60; 
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                    
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    
+                    // Aggiorniamo l'URL nel browser senza ricaricare
+                    history.pushState(null, '', targetId);
+                }
+            }
+            // Se il link porta a un'altra pagina, lascia fare al browser (navigazione standard)
         });
     });
 
