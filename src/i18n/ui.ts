@@ -45,6 +45,9 @@ export const ui = {
         "contact.form.placeholder.email": "Your email",
         "contact.form.placeholder.message": "How can I help you?",
         "contact.form.send": "Send Message",
+        "contact.form.protect": `This site is protected by reCAPTCHA and Google
+                      <a href="https://policies.google.com/privacy" class="underline">Privacy Policy</a> and
+                      <a href="https://policies.google.com/terms" class="underline">Terms of Service</a> apply.`,
         "contact.vcard.download": "Add to contacts",
         "contact.vcard.showQR": "Show QR Code",
         "contact.vcard.tooltip_info": "It's a digital business card. Download it to immediately add me to your address book without having to copy the data by hand.",
@@ -96,6 +99,9 @@ export const ui = {
         "contact.form.placeholder.email": "La tua email",
         "contact.form.placeholder.message": "Come posso aiutarti?",
         "contact.form.send": "Invia Messaggio",
+        "contact.form.protect": `Questo sito è protetto da reCAPTCHA e Google
+                      <a href="https://policies.google.com/privacy" class="underline">Privacy Policy</a> e
+                      <a href="https://policies.google.com/terms" class="underline">Terms of Service</a> si applicano.`,
         "contact.vcard.download": "Aggiungi ai contatti",
         "contact.vcard.showQR": "Mostra QR Code",
         "contact.vcard.tooltip_info": "È un biglietto da visita digitale. Scaricalo per aggiungermi subito alla tua rubrica senza dover copiare i dati a mano.",
