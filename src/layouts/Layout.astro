@@ -4,6 +4,15 @@ import Footer from "../components/common/Footer.astro";
 import Navbar from "../components/common/Navbar.astro";
 import "../styles/global.css";
 
+import '@fontsource/space-grotesk/300.css';
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/700.css';
+
+import '@fontsource/noto-sans/400.css';
+import '@fontsource/noto-sans/500.css';
+import '@fontsource/noto-sans/700.css';
+
 interface Props {
     title: string;
     description?: string;
@@ -40,13 +49,30 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ;
     <head>
         <meta charset="UTF-8" />
         <script define:vars={{ GTM_ID }}>
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer', GTM_ID);
+            document.addEventListener("DOMContentLoaded", () => {
+                let gtmLoaded = false;
+                
+                const loadGTM = () => {
+                if (gtmLoaded) return;
+                gtmLoaded = true;
+                
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer', GTM_ID);
+                };
+
+                // se l'utente si muove, carica GTM
+                ['scroll', 'mousemove', 'touchstart', 'click'].forEach(event => {
+                    window.addEventListener(event, loadGTM, { once: true });
+                });
+
+                // se l'utente non fa nulla per 3.5 secondi, carica GTM comunque
+                setTimeout(loadGTM, 3500);
+            });
         </script>
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
 
@@ -77,11 +103,6 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ;
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={new URL(image, Astro.url)} />
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
         <!-- Change Theme -->
         <script is:inline>

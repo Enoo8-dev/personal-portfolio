@@ -40,7 +40,29 @@ const socialLinks = [
     }
 </style>
 
-<script async defer is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+<script define:vars={{ siteKey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY }}>
+  const form = document.querySelector('contact-form'); 
+  let recaptchaLoaded = false;
+
+  const loadRecaptcha = () => {
+    if (recaptchaLoaded) return;
+    recaptchaLoaded = true;
+    
+    // Crea lo script e lo inietta
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  };
+
+  if (form) {
+    // Appena l'utente interagisce con il form, carica reCAPTCHA
+    form.addEventListener('mouseenter', loadRecaptcha, { once: true });
+    form.addEventListener('touchstart', loadRecaptcha, { once: true });
+    form.addEventListener('focusin', loadRecaptcha, { once: true });
+  }
+</script>
 
 <section class="w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-border-dark mt-8 transition-colors" id="contact">
     <div class="w-full max-w-[1200px] px-4 py-20 sm:px-10 mx-auto">
