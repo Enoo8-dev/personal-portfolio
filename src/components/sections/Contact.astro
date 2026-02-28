@@ -41,7 +41,7 @@ const socialLinks = [
 </style>
 
 <script define:vars={{ siteKey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY }}>
-  const form = document.querySelector('contact-form'); 
+  const form = document.querySelector('#contact-form'); 
   let recaptchaLoaded = false;
 
   const loadRecaptcha = () => {
