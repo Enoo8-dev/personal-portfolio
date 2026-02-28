@@ -40,30 +40,6 @@ const socialLinks = [
     }
 </style>
 
-<script define:vars={{ siteKey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY }}>
-  const form = document.querySelector('#contact-form'); 
-  let recaptchaLoaded = false;
-
-  const loadRecaptcha = () => {
-    if (recaptchaLoaded) return;
-    recaptchaLoaded = true;
-    
-    // Crea lo script e lo inietta
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  };
-
-  if (form) {
-    // Appena l'utente interagisce con il form, carica reCAPTCHA
-    form.addEventListener('mouseenter', loadRecaptcha, { once: true });
-    form.addEventListener('touchstart', loadRecaptcha, { once: true });
-    form.addEventListener('focusin', loadRecaptcha, { once: true });
-  }
-</script>
-
 <section class="w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-border-dark mt-8 transition-colors" id="contact">
     <div class="w-full max-w-[1200px] px-4 py-20 sm:px-10 mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
@@ -211,10 +187,22 @@ const socialLinks = [
 
 <script>
     const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
-    // Logica Client-Side per inviare i dati all'API
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
     const statusMsg = document.getElementById('form-status');
+
+    // caricamento reCAPTCHA
+    let recaptchaLoaded = false;
+    const loadRecaptcha = () => {
+        if (recaptchaLoaded) return;
+        recaptchaLoaded = true;
+        
+        const script = document.createElement('script');
+        script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    };
 
     const icons = {
       check: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`,
@@ -225,14 +213,25 @@ const socialLinks = [
     let msgTimer: ReturnType<typeof setTimeout>;
 
     if (form && submitBtn && statusMsg) {
+        
+        // eventi del form per caricare reCAPTCHA
+        form.addEventListener('mouseenter', loadRecaptcha, { once: true });
+        form.addEventListener('touchstart', loadRecaptcha, { once: true });
+        form.addEventListener('focusin', loadRecaptcha, { once: true });
+
         form.addEventListener('submit', (e) => {
             e.preventDefault(); 
 
-            // Blocchiamo subito il bottone per evitare doppi click
+            // controlliamo se reCAPTCHA è pronto
+            if (typeof grecaptcha === 'undefined') {
+                alert("Il sistema di sicurezza non ha ancora finito di caricarsi, oppure è stato bloccato da un AdBlocker. Riprova tra un istante o disattiva l'AdBlocker per questa pagina.");
+                loadRecaptcha(); // Forziamo il caricamento nel caso non fosse partito
+                return;
+            }
+
             submitBtn.disabled = true;
 
-            // Chiamiamo Google reCAPTCHA
-            // @ts-ignore (Ignoriamo TypeScript perché grecaptcha è caricato esternamente)
+            // @ts-ignore 
             grecaptcha.ready(function() {
                 // @ts-ignore
                 grecaptcha.execute(siteKey, {action: 'submit'}).then(async function(token) {                    
@@ -247,8 +246,6 @@ const socialLinks = [
                     statusMsg.className = "hidden"; 
 
                     const formData = new FormData(form);
-
-                    // Aggiungiamo il token al formData prima di inviare
                     formData.append('recaptcha_token', token); 
 
                     try {
@@ -258,24 +255,15 @@ const socialLinks = [
                         });
 
                         const data = await response.json();
-
                         statusMsg.classList.remove('hidden');
 
                         if (response.ok) {
-                            // SUCCESSO
                             statusMsg.className = "mt-4 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 text-sm font-medium flex items-center justify-center gap-2 animate-pulse";
-                            statusMsg.innerHTML = `
-                                ${icons.check}
-                                <span>Messaggio inviato con successo!</span>
-                            `;
+                            statusMsg.innerHTML = `${icons.check}<span>Messaggio inviato con successo!</span>`;
                             form.reset();
                         } else {
-                            // ERRORE (Backend o Spam rilevato)
                             statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
-                            statusMsg.innerHTML = `
-                                ${icons.error}
-                                <span>${data.message || "Errore nell'invio."}</span>
-                            `;
+                            statusMsg.innerHTML = `${icons.error}<span>${data.message || "Errore nell'invio."}</span>`;
                         }
 
                         msgTimer = setTimeout(() => {
@@ -285,36 +273,28 @@ const socialLinks = [
                     } catch (error) {
                         statusMsg.classList.remove('hidden');
                         statusMsg.className = "mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center justify-center gap-2";
-                        statusMsg.innerHTML = `
-                            ${icons.wifi_off}
-                            <span>Errore di connessione. Riprova più tardi.</span>
-                        `;
+                        statusMsg.innerHTML = `${icons.wifi_off}<span>Errore di connessione. Riprova più tardi.</span>`;
                     } finally {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalBtnText;
                     }
-                    // --- FINE LOGICA ORIGINALE ---
-
-                }); // Chiusura .then()
-            }); // Chiusura .ready()
+                }); 
+            }); 
         });
     }
 
     // show time
     function updateLocalTime() {
         const timeDisplay = document.getElementById('local-time');
-        
         if (timeDisplay) {
             const timeZone = timeDisplay.getAttribute('data-timezone') || 'Europe/Rome';
             const now = new Date();
-            
             const options: Intl.DateTimeFormatOptions = { 
                 timeZone: timeZone, 
                 hour: '2-digit', 
                 minute: '2-digit',
                 hour12: false
             };
-
             try {
                 const timeString = new Intl.DateTimeFormat('it-IT', options).format(now);
                 timeDisplay.textContent = `(${timeString})`;
@@ -324,7 +304,6 @@ const socialLinks = [
             }
         }
     }
-
     updateLocalTime();
     setInterval(updateLocalTime, 60000);
 </script>
