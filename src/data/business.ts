@@ -12,6 +12,7 @@ export const personalInfo = {
     location: "Ferrara, Italy",
     timezone: "Europe/Rome",
     email: "me@beninifederico.it",
+    p_iva: "02195850389",
 
     // Assets e File
     avatar: "/images/avatar.svg",
