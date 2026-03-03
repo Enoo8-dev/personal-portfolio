@@ -1,12 +1,12 @@
 ---
 import { useTranslations } from '../../i18n/utils';
-import QrCodeVCF from '../common/QrCodeVCF.astro';
 import { personalInfo } from '../../data/business';
 import InfoOutlined from '../common/icons/InfoOutlined.astro';
 import LocationOnOutlined from '../common/icons/LocationOnOutlined.astro';
 import PersonAddOutlined from '../common/icons/PersonAddOutlined.astro';
 import QrCodeOutlined from '../common/icons/QrCodeOutlined.astro';
 import CloseOutlined from '../common/icons/CloseOutlined.astro';
+import QrCodeVCFupdated from '../common/QrCodeVCFupdated.astro';
 
 interface Props {
   lang: 'en' | 'it';
@@ -115,7 +115,7 @@ const t = useTranslations(lang);
         {t('contact.vcard.popup.title')}
       </h3>
       <div class="p-4 bg-white rounded-2xl shadow-inner border border-gray-100">
-        <QrCodeVCF
+        <QrCodeVCFupdated
           className="size-48 text-slate-900 dark:text-primary transition-colors duration-300"
           color="currentColor"
         />
