@@ -46,6 +46,7 @@ export const ui = {
         "contact.form.placeholder.email": "Your email",
         "contact.form.placeholder.message": "How can I help you?",
         "contact.form.send": "Send Message",
+        "contact.form.privacy": `I have read and agree to the <a href="/privacy-policy" target="_blank" class="underline hover:text-primary transition-colors">Privacy Policy</a>`,
         "contact.form.protect": `This site is protected by reCAPTCHA and Google
                       <a href="https://policies.google.com/privacy" class="underline">Privacy Policy</a> and
                       <a href="https://policies.google.com/terms" class="underline">Terms of Service</a> apply.`,
@@ -101,6 +102,7 @@ export const ui = {
         "contact.form.placeholder.email": "La tua email",
         "contact.form.placeholder.message": "Come posso aiutarti?",
         "contact.form.send": "Invia Messaggio",
+        "contact.form.privacy": `Ho letto e accetto la <a href="/privacy-policy" target="_blank" class="underline hover:text-primary transition-colors">Privacy Policy</a>`,
         "contact.form.protect": `Questo sito è protetto da reCAPTCHA e Google
                       <a href="https://policies.google.com/privacy" class="underline">Privacy Policy</a> e
                       <a href="https://policies.google.com/terms" class="underline">Terms of Service</a> si applicano.`,
