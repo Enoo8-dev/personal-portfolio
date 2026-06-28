@@ -107,7 +107,7 @@ const t = useTranslations(lang);
                             <p class="mb-2">
                                 <span class="text-green-500">➜</span>
                                 <span class="text-blue-500">~</span>
-                                <span class="text-slate-400">wget</span> https://beninifederico.it{Astro.url.pathname}
+                                <span class="text-slate-400">wget</span> https://beninifederico.it<span id="error-path">{Astro.url.pathname}</span>
                             </p>
                             <p class="mb-2">{t('404.console.connecting')}</p>
                             <p class="mb-2 text-red-500">
@@ -157,6 +157,12 @@ const t = useTranslations(lang);
             </section>
         </main>
     </div>
+    <script>
+        const errorPathElement = document.getElementById('error-path');
+        if (errorPathElement) {
+            errorPathElement.textContent = window.location.pathname + window.location.search;
+        }
+    </script>
 </Layout>
         
         
