@@ -6,7 +6,12 @@ import Connect from '../../components/sections/Connect.astro';
 const lang = 'it'; // Lingua fissa per questa pagina
 ---
 
-<Layout title="Federico Benini's Portfolio" lang={lang} image='/images/og-image-it.png'>
+<Layout 
+    title="Contatta Federico Benini | Biglietto da Visita Digitale" 
+    description="Entra in contatto con Federico Benini, salva il contatto in rubrica (vCard) o collegati su LinkedIn e GitHub."
+    lang={lang} 
+    image='/images/og-image-it.png'
+>
     <main class="flex flex-col items-center w-full">
         <Connect lang={lang} />
         <Contact lang={lang} />

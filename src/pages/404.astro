@@ -9,7 +9,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title={t('404.title')} lang={lang}>
+<Layout title={t('404.title')} lang={lang} noindex={true} hasTranslation={false}>
     <style>
         .cursor-blink {
             animation: blink 1s step-end infinite;

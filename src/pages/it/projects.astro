@@ -44,7 +44,12 @@ const tagCounts = allTags.reduce((acc, tag) => {
     }
 </style>
 
-<Layout title="Tutti i Progetti | Federico Benini" lang={lang} description='Esplora il mio portfolio di progetti di sviluppo web, mobile e design. Filtra per tecnologia e scopri le soluzioni che ho realizzato.'>
+<Layout 
+    title={`${t('projects.allProjects')} | Federico Benini`} 
+    description="Esplora tutti i progetti di sviluppo web e software realizzati da Federico Benini."
+    lang={lang} 
+    image='/images/og-image-it.png'
+>
     <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-10 py-24">
         <div class="mb-12">
             <a 

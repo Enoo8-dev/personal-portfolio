@@ -1,5 +1,4 @@
 ---
-// src/layouts/Layout.astro
 import Footer from "../components/common/Footer.astro";
 import Navbar from "../components/common/Navbar.astro";
 import "../styles/global.css";
@@ -18,30 +17,40 @@ interface Props {
     description?: string;
     image?: string;
     lang?: 'en' | 'it';
+    hasTranslation?: boolean;
+    noindex?: boolean;
 }
 
 const { 
     title, 
-    description = "Portfolio Developer - Web Development & Software Engineering", // Valore di default più descrittivo
-    image = "/images/og-image-en.png", // Immagine di default per le condivisioni
-    lang = 'en' 
+    lang = 'en',
+    description = lang === 'it'
+        ? "Federico Benini - Full Stack Developer. Sviluppo applicazioni web moderne, siti veloci e soluzioni software incentrate sull'esperienza utente."
+        : "Federico Benini - Full Stack Developer. Creating elegant web applications, fast websites, and user-first software solutions.",
+    image = lang === 'it' ? "/images/og-image-it.png" : "/images/og-image-en.png",
+    hasTranslation = true,
+    noindex = false,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Normalizza il path assicurando sempre lo slash finale (coerente con Apache)
+const ensureTrailingSlash = (path: string) => path.endsWith('/') ? path : `${path}/`;
 
-const currentPath = Astro.url.pathname;
-const basePath = currentPath.startsWith('/it') ? currentPath.replace(/^\/it/, '') : currentPath;
-const normalizedPath = basePath === '' ? '/' : basePath;
+const currentPath = ensureTrailingSlash(Astro.url.pathname);
+const canonicalURL = new URL(currentPath, Astro.site);
+
+// Rimuove il prefisso '/it/' per calcolare il percorso base neutro
+const strippedPath = currentPath.replace(/^\/it(\/|$)/, '/');
+const normalizedPath = ensureTrailingSlash(strippedPath === '' ? '/' : strippedPath);
 
 const enUrl = new URL(normalizedPath, Astro.site);
-const itUrl = new URL(`/it${normalizedPath === '/' ? '' : normalizedPath}`, Astro.site);
+const itUrl = new URL(normalizedPath === '/' ? '/it/' : `/it${normalizedPath}`, Astro.site);
 
 const locales = {
     en: 'en_US',
     it: 'it_IT'
 };
 
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ;
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID;
 ---
 
 <!doctype html>
@@ -80,22 +89,32 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ;
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="author" content="Federico Benini" />
-        <link rel="canonical" href={canonicalURL} />
 
-        <!-- Hreflang Tags -->
-        <link rel="alternate" hreflang="en" href={enUrl.href} />
-        <link rel="alternate" hreflang="it" href={itUrl.href} />
-        <link rel="alternate" hreflang="x-default" href={enUrl.href} />
+        {noindex ? (
+            <meta name="robots" content="noindex, nofollow" />
+        ) : (
+            <link rel="canonical" href={canonicalURL.href} />
+        )}
+
+        <!-- Hreflang Tags (generati solo se la pagina è indicizzabile e ha la traduzione) -->
+        {!noindex && hasTranslation && (
+            <>
+                <link rel="alternate" hreflang="en" href={enUrl.href} />
+                <link rel="alternate" hreflang="it" href={itUrl.href} />
+                <link rel="alternate" hreflang="x-default" href={enUrl.href} />
+            </>
+        )}
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={Astro.url} />
+        <meta property="og:url" content={canonicalURL.href} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={new URL(image, Astro.url)} />
-        <meta property="og:site_name" content="Federico Benini Portfolio" />
-        <meta property="og:locale" content={locales[lang as 'en' | 'it']} />
-        <meta property="og:locale:alternate" content={lang === 'en' ? locales.it : locales.en} />
+        <meta property="og:image" content={new URL(image, Astro.site).href} />
+        <meta property="og:locale" content={locales[lang]} />
+        {hasTranslation && (
+            <meta property="og:locale:alternate" content={lang === 'en' ? locales.it : locales.en} />
+        )}
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />

@@ -1,23 +1,19 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-
 import sitemap from '@astrojs/sitemap';
-
 import mdx from '@astrojs/mdx';
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://beninifederico.it',
+  trailingSlash: 'always',
 
   vite: {
-      plugins: [tailwindcss()],
-      server: {
-        proxy: {
-          // Invia le richieste dirette al file PHP verso il server PHP locale
-          '/send-email.php': 'http://localhost:8000'
-        }
+    plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/send-email.php': 'http://localhost:8000'
       }
+    }
   },
 
   image: {
@@ -25,7 +21,18 @@ export default defineConfig({
     remotePatterns: [{ protocol: "http" }],
   },
 
-  integrations: [sitemap(), mdx()],
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          it: 'it',
+        },
+      },
+    }),
+    mdx()
+  ],
 
   i18n: {
     defaultLocale: 'en',

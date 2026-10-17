@@ -10,7 +10,12 @@ const lang = 'en'; // Lingua fissa per questa pagina
 const t = useTranslations(lang);
 ---
 
-<Layout title="Federico Benini's Portfolio" lang={lang} image='/images/og-image-en.png'>
+<Layout 
+    title="Federico Benini | Full Stack Developer Portfolio" 
+    description="Hi, I'm Federico Benini, a Full Stack Developer. I love creating elegant web applications and putting user experience first. Explore my projects and contact me."
+    lang={lang} 
+    image='/images/og-image-en.png'
+>
     <main class="flex flex-col items-center w-full">
         <Hero lang={lang} />
         <Skills lang={lang} />
