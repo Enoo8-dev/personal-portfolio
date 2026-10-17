@@ -95,7 +95,7 @@ const icons_map: Record<string, any> = {
                     const IconComponent = skill.icon ? icons_map[skill.icon] : null;
                     return (
                         <div
-                            data-index={index}nsition-all duration-500 ease-out: fluidità
+                            data-index={index}
                             class="skill-card skill-entry-animate opacity-0 scale-75 blur-sm transition-all duration-500 ease-out group relative shrink-0 w-[85vw] xxs:w-[300px] sm:w-[350px] md:w-full snap-center"
                             style={`--hover-rotate: ${randomRotate}deg; transition-delay: ${delay}ms;`}
                         >
@@ -104,7 +104,7 @@ const icons_map: Record<string, any> = {
                                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-auto md:w-full shrink-0">
                                     <div class={`shrink-0 size-12 md:size-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${skill.iconBg} ${skill.iconColor}`}>
                                         {skill.imageSrc ? (
-                                            <img src={skill.imageSrc} alt={skill.name} loading="eager" fetchpriority="high" class="w-7 h-7 md:w-6 md:h-6 object-contain" />
+                                            <img src={skill.imageSrc} alt={skill.name} width="28" height="28" loading="lazy" class="w-7 h-7 md:w-6 md:h-6 object-contain" />
                                         ) : (
                                             IconComponent && <IconComponent className="w-7 h-7 md:w-6 md:h-6" />
                                         )}

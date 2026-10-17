@@ -1,6 +1,8 @@
 ---
 import { useTranslations } from '../../i18n/utils';
 import { personalInfo } from '../../data/business';
+import { Image } from 'astro:assets';
+import meImage from '../../assets/images/avatar.png';
 import InfoOutlined from '../common/icons/InfoOutlined.astro';
 import LocationOnOutlined from '../common/icons/LocationOnOutlined.astro';
 import PersonAddOutlined from '../common/icons/PersonAddOutlined.astro';
@@ -54,9 +56,11 @@ const t = useTranslations(lang);
       <div
         class="size-32 rounded-full border-4 border-white dark:border-surface-dark overflow-hidden shadow-md bg-gray-200"
       >
-        <img
-          src={personalInfo.avatar}
+        <Image
+          src={meImage}
           alt={personalInfo.fullName}
+          width={256}
+          height={256}
           class="w-full h-full object-contain"
         />
       </div>
@@ -74,7 +78,7 @@ const t = useTranslations(lang);
           class="flex items-center justify-center gap-2 mt-2 text-slate-500 dark:text-slate-400 text-sm"
         >
           <LocationOnOutlined className="text-base h-5 w-5" />
-          <span>{personalInfo.location}</span>
+          <span>{t('location.name')}</span>
         </div>
       </div>
 

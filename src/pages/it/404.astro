@@ -140,14 +140,14 @@ const t = useTranslations(lang);
                     >
                         <a
                             class="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 group"
-                            href={lang === 'it' ? '/it' : '/'}
+                            href={lang === 'it' ? '/it/' : '/'}
                         >
                             <ArrowBackOutlined className="text-xl group-hover:-translate-x-1 transition-transform w-8 h-8" />
                             {t('404.back')}
                         </a>
                         <a
                             class="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark hover:border-primary/50 text-slate-900 dark:text-white rounded-lg font-bold transition-all hover:shadow-lg"
-                            href={lang === 'it' ? '/it#contact' : '/#contact'}
+                            href={lang === 'it' ? '/it/#contact' : '/#contact'}
                         >
                             <MailOutlined className="text-primary text-xl w-8 h-8" />
                             {t('404.contact')}

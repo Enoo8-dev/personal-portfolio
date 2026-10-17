@@ -1,6 +1,7 @@
 ---
 import Footer from "../components/common/Footer.astro";
 import Navbar from "../components/common/Navbar.astro";
+import { personalInfo } from "../data/business";
 import "../styles/global.css";
 
 import '@fontsource/space-grotesk/300.css';
@@ -25,8 +26,8 @@ const {
     title, 
     lang = 'en',
     description = lang === 'it'
-        ? "Federico Benini - Full Stack Developer. Sviluppo applicazioni web moderne, siti veloci e soluzioni software incentrate sull'esperienza utente."
-        : "Federico Benini - Full Stack Developer. Creating elegant web applications, fast websites, and user-first software solutions.",
+        ? "Federico Benini - Full Stack Developer a Ferrara. Realizzazione siti web moderni, applicazioni web su misura e soluzioni software veloci e ottimizzate SEO."
+        : "Federico Benini - Full Stack Developer in Ferrara, Italy. Creating elegant web applications, fast websites, and user-first software solutions.",
     image = lang === 'it' ? "/images/og-image-it.png" : "/images/og-image-en.png",
     hasTranslation = true,
     noindex = false,
@@ -44,10 +45,134 @@ const normalizedPath = ensureTrailingSlash(strippedPath === '' ? '/' : strippedP
 
 const enUrl = new URL(normalizedPath, Astro.site);
 const itUrl = new URL(normalizedPath === '/' ? '/it/' : `/it${normalizedPath}`, Astro.site);
+const ogImageUrl = new URL(image, Astro.site).href;
 
 const locales = {
     en: 'en_US',
     it: 'it_IT'
+};
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "@id": "https://beninifederico.it/#website",
+            "url": lang === 'it' ? "https://beninifederico.it/it/" : "https://beninifederico.it/",
+            "name": "Federico Benini",
+            "alternateName": "Federico Benini Portfolio",
+            "inLanguage": lang === 'it' ? "it-IT" : "en-US",
+            "publisher": {
+                "@id": "https://beninifederico.it/#person"
+            }
+        },
+        {
+            "@type": "Person",
+            "@id": "https://beninifederico.it/#person",
+            "name": personalInfo.fullName,
+            "givenName": personalInfo.firstName,
+            "familyName": personalInfo.lastName,
+            "jobTitle": personalInfo.role,
+            "url": lang === 'it' ? "https://beninifederico.it/it/" : "https://beninifederico.it/",
+            "image": ogImageUrl,
+            "email": `mailto:${personalInfo.email}`,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Ferrara",
+                "addressRegion": "FE",
+                "postalCode": "44121",
+                "addressCountry": "IT"
+            },
+            "sameAs": [
+                personalInfo.social.linkedin,
+                personalInfo.social.github
+            ],
+            "knowsAbout": [
+                "Web Development",
+                "Full Stack Development",
+                "Realizzazione Siti Web",
+                "Astro",
+                "Angular",
+                "TypeScript",
+                "Node.js",
+                "Tailwind CSS",
+                "Search Engine Optimization (SEO)"
+            ]
+        },
+        {
+            "@type": "ProfessionalService",
+            "@id": "https://beninifederico.it/#business",
+            "name": lang === 'it'
+                ? "Federico Benini - Full Stack Developer & Realizzazione Siti Web Ferrara"
+                : "Federico Benini - Full Stack Web Developer",
+            "description": description,
+            "url": canonicalURL.href,
+            "image": ogImageUrl,
+            "email": personalInfo.email,
+            "vatID": `IT${personalInfo.p_iva}`,
+            "priceRange": "$$",
+            "founder": {
+                "@id": "https://beninifederico.it/#person"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Ferrara",
+                "addressRegion": "FE",
+                "postalCode": "44121",
+                "addressCountry": "IT"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 44.8381,
+                "longitude": 11.6198
+            },
+            "areaServed": [
+                {
+                    "@type": "City",
+                    "name": "Ferrara"
+                },
+                {
+                    "@type": "AdministrativeArea",
+                    "name": "Emilia-Romagna"
+                },
+                {
+                    "@type": "Country",
+                    "name": "Italy"
+                }
+            ],
+            "sameAs": [
+                personalInfo.social.linkedin,
+                personalInfo.social.github
+            ],
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": lang === 'it' ? "Servizi di Sviluppo Web e Software" : "Web & Software Development Services",
+                "itemListElement": [
+                    {
+                        "@type": "Offer",
+                        "itemOffered": {
+                            "@type": "Service",
+                            "name": lang === 'it' ? "Realizzazione Siti Web Professionali a Ferrara" : "Custom Website Development"
+                        }
+                    },
+                    {
+                        "@type": "Offer",
+                        "itemOffered": {
+                            "@type": "Service",
+                            "name": lang === 'it' ? "Sviluppo Web App e Software su Misura" : "Full Stack Web Application Development"
+                        }
+                    },
+                    {
+                        "@type": "Offer",
+                        "itemOffered": {
+                            "@type": "Service",
+                            "name": lang === 'it' ? "Ottimizzazione SEO Tecnica e Performance Web" : "Technical SEO & Web Performance Optimization"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
 };
 
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID;
@@ -107,21 +232,30 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID;
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Federico Benini" />
         <meta property="og:url" content={canonicalURL.href} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={new URL(image, Astro.site).href} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
         <meta property="og:locale" content={locales[lang]} />
         {hasTranslation && (
             <meta property="og:locale:alternate" content={lang === 'en' ? locales.it : locales.en} />
         )}
 
         <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={Astro.url} />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={new URL(image, Astro.url)} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalURL.href} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImageUrl} />
+
+        <!-- Dati Strutturati JSON-LD Schema.org -->
+        {!noindex && (
+            <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+        )}
 
         <!-- Change Theme -->
         <script is:inline>

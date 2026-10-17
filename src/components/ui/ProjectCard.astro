@@ -1,18 +1,17 @@
 ---
-// 1. Rimuovi l'import di astro:content e usa il tuo tipo personalizzato
-// import type { CollectionEntry } from "astro:content"; <--- CANCELLA QUESTO
-import type { Project } from "../../lib/wp"; // <--- AGGIUNGI QUESTO
+import type { Project } from "../../lib/wp";
+import { useTranslations } from "../../i18n/utils";
 import { Image } from "astro:assets";
 import placeholderImage from "../../assets/images/placeholder-card-projects.webp";
 import CodeOutlined from "../common/icons/CodeOutlined.astro";
 import ArrowOutwardOutlined from "../common/icons/ArrowOutwardOutlined.astro";
 interface Props {
-  // 2. Aggiorna il tipo atteso
   project: Project;
   className?: string;
 }
 
 const { project, className = "" } = Astro.props;
+const t = useTranslations(project.data.lang);
 
 const imageSrc = project.data.image ? project.data.image : placeholderImage;
 const imageProps = typeof imageSrc === 'string'
@@ -36,12 +35,6 @@ const imageProps = typeof imageSrc === 'string'
     class="relative h-full w-full rounded-2xl overflow-hidden shadow-2xl bg-slate-900 isolate"
     style="transform: translateZ(0);" 
   >
-    {/* imagine di sfondo */}
-    <!-- <div
-      class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-90 blur-[2px]"
-      style={`background-image: url('${project.data.image}'); transform: translateZ(0);`}
-    >
-    </div> -->
     <Image
       {...imageProps as any}
       alt={project.data.title}
@@ -87,7 +80,7 @@ const imageProps = typeof imageSrc === 'string'
               href={project.data.repo}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Vedi il codice sorgente del progetto ${project.data.title}`}
+              aria-label={`${t('projects.card.codeAria')} ${project.data.title}`}
               class="flex-1 bg-white/10 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer no-underline"
             >
               <CodeOutlined className="text-lg w-8 h-8" />
@@ -102,7 +95,7 @@ const imageProps = typeof imageSrc === 'string'
               href={project.data.link}
               target="_blank"
               rel= "noopener noreferrer"
-              aria-label={`Vedi il progetto ${project.data.title} live`}
+              aria-label={`${t('projects.card.liveAria')} ${project.data.title}`}
               class="flex-1 bg-white/10 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer no-underline"
             >
               <ArrowOutwardOutlined className="text-lg w-8 h-8" />
