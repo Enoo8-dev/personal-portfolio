@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.gitignore'
+      - 'README.md'
+      - 'public/config.sample.php'
   repository_dispatch:  
       types: [cms_update]
 

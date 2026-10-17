@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 .vscode/
 public/config.php
+
+TODO/*
